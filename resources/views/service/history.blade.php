@@ -275,10 +275,10 @@
             const report = filteredData.find(r => r.id === id);
             if (!report) return;
             const partsHtml = JSON.parse(report.parts_replaced)?.length ? `<div class="bg-slate-50 rounded-xl p-4"><p class="text-xs font-semibold text-slate-500 uppercase mb-2">Parts Replaced</p><ul class="space-y-1">${JSON.parse(report.parts_replaced).map(p => `<li class="text-sm flex items-center gap-2"><i class="fas fa-microchip text-slate-400 text-xs"></i><span class="font-medium">${p.qty+"x" || ""}</span> ${p.particulars}</li>`).join('')}</ul></div>` : '<div class="text-slate-400 italic text-sm">No parts replaced</div>';
-            const before_images = JSON.parse(report.before_images)
-            const after_images = JSON.parse(report.after_images)
-            const service_images = JSON.parse(report.service_images)
-            const calibration_images = JSON.parse(report.calibration_images)
+            // const before_images = JSON.parse(report.before_images)
+            // const after_images = JSON.parse(report.after_images)
+            // const service_images = JSON.parse(report.service_images)
+            // const calibration_images = JSON.parse(report.calibration_images)
 
             const machine_name = machines.find(m => m.id === report.machine_id)?.name;
             const machine_model = machines.find(m => m.id === report.machine_id)?.model;

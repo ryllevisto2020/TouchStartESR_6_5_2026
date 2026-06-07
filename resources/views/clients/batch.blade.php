@@ -83,7 +83,7 @@
         <!-- Footer -->
         <div class="no-print text-center mt-8 text-gray-500">
             <p class="text-sm">Generated from Service Report Management System</p>
-            <p class="text-xs mt-1">© 2024 Medical Solutions Inc. All rights reserved.</p>
+            <p class="text-xs mt-1">© 2026 Touchstar Medical Enterprises Inc. All rights reserved.</p>
         </div>
     </div>
 
@@ -163,15 +163,14 @@
                         <!-- Report Header -->
                         <div class="border-b-4 border-blue-600 pb-6 mb-6">
                             <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                                <div class="flex items-center space-x-4 mb-4 md:mb-0">
-                                    <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-3 shadow-lg">
-                                        <i class="fas fa-heartbeat text-white text-2xl"></i>
+                               <img src="/images/logo.png" alt="Touchstar" style="height:70px;object-fit:contain;"
+                                        onerror="this.style.display='none';">
+                                    <div style="text-align:center;flex:1;padding:0 12px;">
+                                        <div style="font-size:15px;font-weight:900;color:#1D4ED8;text-transform:uppercase;letter-spacing:.08em;">
+                                            Touchstar Medical Enterprises Inc.
+                                        </div>
+                                        <div style="font-size:11px;font-weight:700;color:#374151;margin-top:1px;">SERVICE REPORT</div>
                                     </div>
-                                    <div>
-                                        <h3 class="text-xl font-black text-gray-900">MEDICAL SOLUTIONS INC.</h3>
-                                        <p class="text-sm text-gray-600">Professional Equipment Services</p>
-                                    </div>
-                                </div>
                                 <div class="text-left md:text-right">
                                     <span class="bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-bold">REPORT #${report.id}</span>
                                     <p class="text-sm font-medium text-gray-700 mt-1">${report.formatted_date}</p>
