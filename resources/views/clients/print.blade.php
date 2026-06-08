@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Service Report - MediTech Solutions</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+
     <script>
         tailwind.config = {
             theme: {
@@ -156,11 +156,18 @@
     <script>
         // ── Swap this block with your Laravel Blade syntax ──
         const MOCK_REPORTS = {{ Js::from($client_service_record) }};
+        const client_detail = {{ Js::from($client_detail) }};
+        const machines = {{ Js::from($machines) }};
+        const employee_details = {{ Js::from($employee_details) }};
 
         function loadReportData() {
             const urlParams = new URLSearchParams(window.location.search);
             const reportId  = parseInt(urlParams.get('id'));
             const report    = MOCK_REPORTS.find(r => r.id === reportId);
+            const machine_name = machines.find(r => r.id === report.machine_id).name;
+            const model = machines.find(r => r.id === report.machine_id).model;
+            const serial_number = machines.find(r => r.id === report.machine_id).serial_number;
+            const emp_signature = employee_details.find(r => r.emp_id === report.completed_by_user_id).emp_signature;
 
             if (!report) {
                 document.getElementById('printContent').innerHTML = `
@@ -189,6 +196,7 @@
 
             const statusClass = report.equipment_status === 'Operational' ? 'green' : 'red';
             const medtechSig  = `${window.location.origin}/storage/${report.medtech_signature}`;
+            const emp_sig = `${window.location.origin}/storage/${emp_signature}`
 
             /* ── Parts table ── */
             const partsHtml = parts.length ? `
@@ -250,19 +258,19 @@
                         <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:6px;padding:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
                             <div>
                                 <div class="field-label">Client / Location</div>
-                                <div class="field-val">${report.client_location}</div>
+                                <div class="field-val">${client_detail.client_name}</div>
                             </div>
                             <div>
                                 <div class="field-label">Machine Name</div>
-                                <div class="field-val">${report.machine_name}</div>
+                                <div class="field-val">${machine_name}</div>
                             </div>
                             <div>
                                 <div class="field-label">Model</div>
-                                <div class="field-val">${report.model}</div>
+                                <div class="field-val">${model}</div>
                             </div>
                             <div>
                                 <div class="field-label">Serial Number</div>
-                                <div class="field-val mono">${report.serial_number}</div>
+                                <div class="field-val mono">${serial_number}</div>
                             </div>
                         </div>
                     </div>
@@ -354,7 +362,8 @@
                                 Service Engineer
                             </div>
                             <div style="height:56px;display:flex;align-items:center;justify-content:center;background:white;border-radius:5px;">
-                                <span style="color:#D1D5DB;font-size:9px;">Signature</span>
+                                <img src="${emp_sig}" style="max-height:52px;max-width:100%;object-fit:contain;"
+                                    onerror="this.parentElement.innerHTML='<span style=color:#9CA3AF;font-size:9px;>No signature</span>';">
                             </div>
                             <div class="sig-line"></div>
                             <div style="font-size:10px;font-weight:700;color:#111827;">${report.service_engineer}</div>
