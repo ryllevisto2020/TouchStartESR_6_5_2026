@@ -272,7 +272,7 @@
                         onerror="this.style.display='none'">
                     <div class="doc-header-center">
                         <div class="company">Touchstar Medical Enterprises Inc.</div>
-                        <div class="doc-type">SERVICE REPORT</div>
+                        <div class="doc-type">E-SERVICE REPORT</div>
                     </div>
                     <div class="doc-header-right">
                         <div class="lbl">Report No.</div>

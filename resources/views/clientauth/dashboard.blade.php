@@ -13,11 +13,11 @@
             </h1>
 
             <p class="text-3xl sm:text-4xl font-bold text-slate-900 mt-2">
-                Welcome, {{ $client_detail->client_name ?? 'Client' }} 👋
+                Welcome, {{ $client_detail->client_name ?? 'Client' }} 
             </p>
 
             <p class="text-sm text-slate-500 mt-2">
-                {{ $currentDate ?? now()->format('l, F d, Y') }} · Here’s what’s happening today
+                {{ $currentDate ?? now()->format('l, F d, Y') }}  Heres whats happening today
             </p>
         </div>
     </div>
@@ -28,7 +28,7 @@
         {{-- Machines --}}
         <div class="bg-white rounded-2xl shadow-sm border border-blue-100 p-6 hover:shadow-md transition">
             <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-4">
-                <span class="text-blue-600 text-xl">🖥️</span>
+                <span class="text-blue-600 text-xl"></span>
             </div>
             <h3 class="text-sm font-medium text-slate-500">Installed Machines</h3>
             <p class="text-3xl font-bold text-slate-900 mt-2">
@@ -40,7 +40,7 @@
         {{-- Services --}}
         <div class="bg-white rounded-2xl shadow-sm border border-indigo-100 p-6 hover:shadow-md transition">
             <div class="w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center mb-4">
-                <span class="text-indigo-600 text-xl">🛠️</span>
+                <span class="text-indigo-600 text-xl"></span>
             </div>
             <h3 class="text-sm font-medium text-slate-500">Pending Services</h3>
             <p class="text-3xl font-bold text-slate-900 mt-2">
@@ -52,7 +52,7 @@
         {{-- Completed --}}
         <div class="bg-white rounded-2xl shadow-sm border border-emerald-100 p-6 hover:shadow-md transition">
             <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center mb-4">
-                <span class="text-emerald-600 text-xl">✅</span>
+                <span class="text-emerald-600 text-xl"></span>
             </div>
             <h3 class="text-sm font-medium text-slate-500">Completed Requests</h3>
             <p class="text-3xl font-bold text-slate-900 mt-2">
