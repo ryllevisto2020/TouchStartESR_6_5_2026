@@ -19,6 +19,7 @@
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <link rel="icon" type="image/png" href="{{ asset('images/icon-192.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/icon-180.png') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
 
  
 

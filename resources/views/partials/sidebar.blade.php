@@ -114,7 +114,7 @@
                     </div>
             </li>
 
-            @if ($employee_details->emp_role === "SUPERADMIN" || $employee_details->emp_role === "ADMIN")
+            {{-- @if ($employee_details->emp_role === "SUPERADMIN" || $employee_details->emp_role === "ADMIN") --}}
            <li class="nav-item">
                 <button class="nav-button" onclick="toggleDropdown('user-dropdown', 'user-chevron')">
                     <div class="flex items-center">
@@ -148,7 +148,7 @@
                     </a>
                 </div>
             </li>
-            @endif
+            {{-- @endif --}}
         </ul>
     </div>
     
@@ -161,7 +161,7 @@
             <div class="ml-3 flex-1 min-w-0">
                 <p class="text-sm font-medium text-white truncate">
                     @auth('touchstaraccount')
-                        {{$employee_details->emp_first_name}} {{$employee_details->emp_last_name}}
+                        {{-- {{$employee_details->emp_first_name}} {{$employee_details->emp_last_name}} --}}
                     @else
                         Guest User
                     @endauth
@@ -169,7 +169,7 @@
                 <p class="text-xs text-blue-200 font-medium truncate">
                     @auth('touchstaraccount')
                         {{-- {{ strtoupper(auth()->user()->role ?? 'USER') }} --}}
-                        {{$employee_details->emp_role}}
+                        {{-- {{$employee_details->emp_role}} --}}
                     @else
                         GUEST
                     @endauth

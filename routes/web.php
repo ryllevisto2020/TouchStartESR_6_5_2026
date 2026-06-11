@@ -205,3 +205,13 @@ Route::get('clients/print', function(){
     $employee_details = touchStarEmp::all();
     return view('clients.print',compact("client_service_record","client_detail","machines","employee_details"));
 })->name('clients.print');
+
+
+Route::get('/admin/ticket', function(){
+    return view('ticket.admin');
+});
+
+
+Route::get('/client/ticket', function(){
+    return view('clients.ticket');
+})->name('client.ticket');
