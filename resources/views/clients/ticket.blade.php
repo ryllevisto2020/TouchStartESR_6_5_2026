@@ -181,7 +181,7 @@
       <div class="ssub">All time</div>
     </div>
     <div class="stat-card open-c">
-      <div class="slabel"><i class="ti ti-circle-dot" style="font-size:13px;color:#3b82f6;"></i> Open</div>
+      <div class="slabel"><i class="ti ti-circle-dot" style="font-size:13px;color:#3b82f6;"></i> Pending</div>
       <div class="sval">3</div>
       <div class="ssub">Awaiting action</div>
     </div>
@@ -205,7 +205,7 @@
       <div style="display:flex;gap:6px;align-items:center;">
         <div style="display:flex;background:#f1f5f9;border-radius:7px;padding:3px;gap:2px;">
           <span style="padding:4px 10px;border-radius:5px;font-size:11.5px;background:#fff;color:#185fa5;font-weight:600;cursor:pointer;border:1px solid #dbeafe;">All</span>
-          <span style="padding:4px 10px;border-radius:5px;font-size:11.5px;color:#64748b;cursor:pointer;">Open</span>
+          <span style="padding:4px 10px;border-radius:5px;font-size:11.5px;color:#64748b;cursor:pointer;">Pending</span>
           <span style="padding:4px 10px;border-radius:5px;font-size:11.5px;color:#64748b;cursor:pointer;">In Progress</span>
           <span style="padding:4px 10px;border-radius:5px;font-size:11.5px;color:#64748b;cursor:pointer;">Resolved</span>
         </div>
@@ -458,7 +458,7 @@
     document.getElementById('d-id').textContent    = '#' + id;
     document.getElementById('d-title').textContent = title;
     document.getElementById('d-status').innerHTML  = statusBadgeMap[status] || status;
-    document.getElementById('d-opened').textContent    = opened;
+    document.getElementById('d-pending').textContent    = opened;
     document.getElementById('d-assigned').textContent  = assigned;
     document.getElementById('d-category').textContent  = category;
 
