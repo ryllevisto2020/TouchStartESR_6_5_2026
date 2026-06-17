@@ -21,11 +21,11 @@
         {{-- Client name + Full name --}}
         <div class="tms-form-row">
           <div class="tms-form-group">
-            <label>Client / Hospital Name <span style="color:#ef4444;">*</span></label>
-            <input type="text" class="tms-form-control" placeholder="e.g. St. Luke's Medical Center" id="f-client" />
+            <label>Subject / Title <span style="color:#ef4444;">*</span></label>
+            <input type="text" class="tms-form-control" placeholder="Subject / Title" id="f-subject" />
           </div>
           <div class="tms-form-group">
-            <label>Your Full Name <span style="color:#ef4444;">*</span></label>
+            <label>Medtech Reported Name <span style="color:#ef4444;">*</span></label>
             <input type="text" class="tms-form-control" placeholder="e.g. Maria Cruz" id="f-name" />
           </div>
         </div>
@@ -54,12 +54,6 @@
         <div class="tms-form-group" id="tms-other-container" style="display:none;">
           <label>Please Specify <span style="color:#ef4444;">*</span></label>
           <input type="text" class="tms-form-control" id="f-other-cat" placeholder="Enter issue category" />
-        </div>
-
-        {{-- Subject --}}
-        <div class="tms-form-group">
-          <label>Subject / Title <span style="color:#ef4444;">*</span></label>
-          <input type="text" class="tms-form-control" placeholder="One-line summary of the issue" id="f-subject" />
         </div>
 
         {{-- Description --}}
@@ -133,8 +127,8 @@
         <div class="dval" id="d-status"></div>
       </div>
       <div class="detail-cell">
-        <div class="dlabel">Opened</div>
-        <div class="dval" id="d-opened"></div>
+        <div class="dlabel">Pending</div>
+        <div class="dval" id="d-pending"></div>
       </div>
       <div class="detail-cell">
         <div class="dlabel">Assigned to</div>
