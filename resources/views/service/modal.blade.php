@@ -174,7 +174,7 @@
                             </div> --}}
 
                             <!-- Service Images -->
-                            {{-- <div>
+                            <div>
                                 <label class="svc-label"><i class="fas fa-camera mr-1.5 text-blue-500"></i> Service Images <span class="text-xs text-gray-400 font-normal">(Max 10)</span></label>
                                 <div id="service-upload-area" class="svc-upload-area">
                                     <i class="fas fa-cloud-upload-alt text-2xl text-gray-400 mb-2"></i>
@@ -186,7 +186,7 @@
                                     <input id="service-images" name="images[]" type="file" class="hidden" multiple accept="image/*">
                                 </div>
                                 <div id="service-image-preview" class="svc-preview-grid"></div>
-                            </div> --}}
+                            </div>
 
                             <!-- Calibration Images -->
                             {{-- <div>

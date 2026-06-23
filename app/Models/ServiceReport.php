@@ -32,6 +32,5 @@ class ServiceReport extends Model
         'completed_by_user_id',
         'completion_notes',
         'created_at'
-        
     ];
 }
