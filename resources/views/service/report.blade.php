@@ -626,10 +626,7 @@ document.getElementById('clear-draft-btn').addEventListener('click', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
     render();
-    setupImageUpload('before-upload-area', 'before-images', 'before-image-preview', 'before-upload-status', 5);
-    setupImageUpload('after-upload-area', 'after-images', 'after-image-preview', 'after-upload-status', 5);
     setupImageUpload('service-upload-area', 'service-images', 'service-image-preview', 'service-upload-status', 10);
-    setupImageUpload('calibration-upload-area', 'calibration-images', 'calibration-image-preview', 'calibration-upload-status', 10);
 
     document.getElementById('service-form').addEventListener('submit', (e) => {
         // signature validation handled by jQuery block in modal
