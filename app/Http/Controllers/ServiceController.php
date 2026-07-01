@@ -37,7 +37,7 @@ class ServiceController extends Controller
         $service_engineer_department = $req->service_engineer_department;
         // $before_images = $req->file('before-images');
         // $after_images = $req->file('after_images');
-        // $images = $req->file('images');
+        $images = $req->file('images');
         // $calibration_images = $req->file('calibration_images');
 
         $medtech_signature = str_replace("data:image/png;base64,","",$medtech_signature);
@@ -57,13 +57,13 @@ class ServiceController extends Controller
             array_push($part_replaced, $part);
         }
 
-        // $service_images_paths = [];
-        // if($images != null){
-        //     for ($i=0; $i < count($images); $i++) {
-        //         $path = $images[$i]->store('service_images', 'public');
-        //         array_push($service_images_paths, $path);
-        //     }
-        // }
+        $service_images_paths = [];
+        if($images != null){
+            for ($i=0; $i < count($images); $i++) {
+                $path = $images[$i]->store('service_images', 'public');
+                array_push($service_images_paths, $path);
+            }
+        }
 
         // $before_images_paths = [];
         // if($before_images != null){
@@ -110,7 +110,7 @@ class ServiceController extends Controller
             'service_engineer'=>$service_engineer,
             'service_engineer_department'=>$service_engineer_department,
             'service_date'=>now()->format('Y-m-d'),
-            // 'service_images'=>json_encode($service_images_paths),
+            'service_images'=>json_encode($service_images_paths),
             // 'before_images'=>json_encode($before_images_paths),
             // 'after_images'=>json_encode($after_images_paths),
             // 'calibration_images'=>json_encode($calibration_images_paths),
@@ -133,7 +133,7 @@ class ServiceController extends Controller
 
     public function history(){
         $employee_details = touchStarEmp::where('emp_id', Auth::guard('touchstaraccount')->user()->emp_id)->first();
-        $service_records = ServiceReport::orderByDesc('id')->get()->all();
+        $service_records = ServiceReport::orderByDesc('id')->offset(0)->limit(250)->get()->all();
         $machines = Machine::all();
          // Mock data for testing
         return view('service.history',compact('employee_details','service_records','machines'));

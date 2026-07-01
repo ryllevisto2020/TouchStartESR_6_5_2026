@@ -834,9 +834,9 @@ $(document).ready(function () {
             //     form.append("calibration_images[]", $("#calibration-images")[0].files[index]);
             // }
 
-            // for (let index = 0; index < $("#service-images")[0].files.length; index++) {
-            //     form.append("images[]", $("#service-images")[0].files[index]);
-            // }
+            for (let index = 0; index < $("#service-images")[0].files.length; index++) {
+                form.append("images[]", $("#service-images")[0].files[index]);
+            }
 
 
             $.ajax({

@@ -66,7 +66,8 @@ Route::get('/service/history', [ServiceController::class, 'history'])->name('ser
 
 #Service Report Print Routes
 Route::get('/service/print/', function () {
-    $service_records = ServiceReport::all();
+    //$service_records = ServiceReport::all();
+    $service_records = ServiceReport::orderByDesc('id')->offset(0)->limit(250)->get()->all();
     $machines = Machine::all();
     $employee_details = touchStarEmp::all();
     return view('service.print',compact("service_records","machines","employee_details"));

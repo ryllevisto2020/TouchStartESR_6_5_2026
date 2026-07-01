@@ -3,8 +3,8 @@
     <div class="flex items-center justify-between px-6 border-b border-white/10 h-auto py-4">
         <div class="flex flex-col items-center justify-center py-4">
             @if(file_exists(public_path('images/logo.png')))
-                <img src="{{ asset('images/logo.png') }}" 
-                    alt="TouchStar PMS" 
+                <img src="{{ asset('images/logo.png') }}"
+                    alt="TouchStar PMS"
                     class="w-[130px] h-[120px] rounded-full ml-10"> <!-- custom px size -->
             @else
                 <div class="logo-placeholder w-[60px] h-[60px] flex items-center justify-center rounded-full bg-gray-700">
@@ -23,7 +23,7 @@
         </button>
     </div>
 
-    
+
     <!-- Navigation Menu -->
     <div class="px-4 py-6">
         <ul class="space-y-2">
@@ -37,7 +37,7 @@
                 </a>
             </li>
 
-           
+
 
             <!-- Machines Management -->
             <li class="nav-item">
@@ -58,7 +58,7 @@
 
 
 
-{{-- 
+{{--
              <li class="nav-item">
                     <button class="nav-button" onclick="toggleDropdown('reports-dropdown', 'reports-chevron')">
                         <div class="flex items-center">
@@ -77,7 +77,7 @@
              --}}
 
 
-            
+
             <!-- Preventive Maintenance -->
             <li class="nav-item">
                 <button class="nav-button" onclick="toggleDropdown('pms-dropdown', 'pms-chevron')">
@@ -97,7 +97,7 @@
                         Service Report History
                     </a>
                 </div>
-            </li>  
+            </li>
              <li class="nav-item">
                     <button class="nav-button" onclick="toggleDropdown('satisfaction-dropdown', 'satisfaction-chevron')">
                         <div class="flex items-center">
@@ -114,7 +114,7 @@
                     </div>
             </li>
 
-            {{-- @if ($employee_details->emp_role === "SUPERADMIN" || $employee_details->emp_role === "ADMIN") --}}
+            @if ($employee_details->emp_role === "SUPERADMIN" || $employee_details->emp_role === "ADMIN")
            <li class="nav-item">
                 <button class="nav-button" onclick="toggleDropdown('user-dropdown', 'user-chevron')">
                     <div class="flex items-center">
@@ -132,7 +132,7 @@
                 </div>
             </li>
             <li class="nav-item">
-                
+
                 <button class="nav-button" onclick="toggleDropdown('client-dropdown', 'client-chevron')">
                     <div class="flex items-center">
                         <i class="fa-solid fa-users w-5 text-center"></i>
@@ -140,7 +140,7 @@
                     </div>
                     <i class="fa-solid fa-chevron-down text-xs chevron" id="client-chevron"></i>
                 </button>
-                
+
                 <div class="dropdown-content" id="client-dropdown">
                     <a href="{{ route('client.register') }}" class="dropdown-link">
                         <i class="fa-solid fa-id-card w-4 mr-2"></i>
@@ -148,10 +148,10 @@
                     </a>
                 </div>
             </li>
-            {{-- @endif --}}
+            @endif
         </ul>
     </div>
-    
+
     <!-- User Profile Section -->
     <div class="user-profile">
         <div class="flex items-center">
@@ -161,7 +161,7 @@
             <div class="ml-3 flex-1 min-w-0">
                 <p class="text-sm font-medium text-white truncate">
                     @auth('touchstaraccount')
-                        {{-- {{$employee_details->emp_first_name}} {{$employee_details->emp_last_name}} --}}
+                        {{$employee_details->emp_first_name}} {{$employee_details->emp_last_name}}
                     @else
                         Guest User
                     @endauth
@@ -169,7 +169,7 @@
                 <p class="text-xs text-blue-200 font-medium truncate">
                     @auth('touchstaraccount')
                         {{-- {{ strtoupper(auth()->user()->role ?? 'USER') }} --}}
-                        {{-- {{$employee_details->emp_role}} --}}
+                        {{$employee_details->emp_role}}
                     @else
                         GUEST
                     @endauth
@@ -178,8 +178,8 @@
             @auth('touchstaraccount')
                 <form method="POST" action="{{ route('logout') }}" class="ml-2">
                     @csrf
-                    <button type="submit" 
-                            class="text-white/70 hover:text-white transition-colors duration-200 p-2 rounded-md hover:bg-white/10" 
+                    <button type="submit"
+                            class="text-white/70 hover:text-white transition-colors duration-200 p-2 rounded-md hover:bg-white/10"
                             title="Logout">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                     </button>
