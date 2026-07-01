@@ -36,7 +36,16 @@
             </div>
             <div class="p-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                    <div><label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Client Name</label><select id="filterClient" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm focus:ring-2 focus:ring-blue-200 px-3 py-2"><option value="">All Clients</option><option>WellMed Diagnostics</option><option>MetroHealth Labs</option><option>St. Catherine Hospital</option><option>Northside Imaging</option><option>Makati Medical Center</option></select></div>
+                    <div><label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Client Name</label>
+                        <select id="filterClient" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm focus:ring-2 focus:ring-blue-200 px-3 py-2">
+                        <option value="">All Clients</option>
+                        <option>WellMed Diagnostics</option>
+                        <option>MetroHealth Labs</option>
+                        <option>St. Catherine Hospital</option>
+                        <option>Northside Imaging</option>
+                        <option>Makati Medical Center</option>
+                        </select>
+                    </div>
                     <div><label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Serial Number</label><input type="text" id="filterSerial" placeholder="Enter serial number" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2"></div>
                     <div><label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Location</label><select id="filterLocation" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2"><option value="">All Locations</option><option>Manila</option><option>Cebu</option><option>Davao</option><option>Laguna</option><option>Quezon City</option></select></div>
                     <div><label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Service Type</label><select id="filterType" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2"><option value="">All Types</option><option>PMS</option><option>Troubleshooting</option><option>Installation</option><option>Warranty</option></select></div>
@@ -277,7 +286,7 @@
             const partsHtml = JSON.parse(report.parts_replaced)?.length ? `<div class="bg-slate-50 rounded-xl p-4"><p class="text-xs font-semibold text-slate-500 uppercase mb-2">Parts Replaced</p><ul class="space-y-1">${JSON.parse(report.parts_replaced).map(p => `<li class="text-sm flex items-center gap-2"><i class="fas fa-microchip text-slate-400 text-xs"></i><span class="font-medium">${p.qty+"x" || ""}</span> ${p.particulars}</li>`).join('')}</ul></div>` : '<div class="text-slate-400 italic text-sm">No parts replaced</div>';
             // const before_images = JSON.parse(report.before_images)
             // const after_images = JSON.parse(report.after_images)
-            // const service_images = JSON.parse(report.service_images)
+            const service_images = JSON.parse(report.service_images)
             // const calibration_images = JSON.parse(report.calibration_images)
 
             const machine_name = machines.find(m => m.id === report.machine_id)?.name;
@@ -290,9 +299,9 @@
             let after_images_path = '';
             let before_images_path = '';
 
-            // for (let index = 0; index < service_images.length; index++) {
-            //     service_images_path += `<img src="/storage/${service_images[index]}" class="w-24 h-24 object-cover rounded-lg border">`
-            // }
+            for (let index = 0; index < service_images.length; index++) {
+                service_images_path += `<img src="/storage/${service_images[index]}" class="w-24 h-24 object-cover rounded-lg border">`
+            }
 
             // for (let index = 0; index < calibration_images.length; index++) {
             //     calibration_images_path += `<img src="/storage/${calibration_images[index]}" class="w-24 h-24 object-cover rounded-lg border">`
@@ -311,13 +320,18 @@
                     <div><p class="text-xs font-semibold text-slate-400 uppercase">Machine</p><p class="font-medium text-slate-800">${machine_name} (${machine_model})</p></div>
                     <div><p class="text-xs font-semibold text-slate-400 uppercase">Serial / Location</p><p class="text-slate-700">${machine_serial} | ${machine_location}</p></div>
                     <div><p class="text-xs font-semibold text-slate-400 uppercase">Service Type</p><p><span class="inline-flex px-2 py-0.5 rounded-full text-xs bg-indigo-100 text-indigo-700">${report.service_type}</span></p></div>
-                    <div><p class="text-xs font-semibold text-slate-400 uppercase">Service Date</p><p class="text-slate-700">${report.formatted_date}</p></div>
+                    <div><p class="text-xs font-semibold text-slate-400 uppercase">Service Date</p><p class="text-slate-700">${report.service_date}</p></div>
                     <div><p class="text-xs font-semibold text-slate-400 uppercase">Service Engineer</p><p class="text-slate-700">${report.service_engineer}</p></div>
                     <div><p class="text-xs font-semibold text-slate-400 uppercase">Approved By</p><p class="text-slate-700">${report.approved_by}</p></div>
                     <div class="col-span-2"><p class="text-xs font-semibold text-slate-400 uppercase">Root Cause / Findings</p><p style="white-space: break-spaces;" class="text-slate-700 bg-slate-50 p-3 rounded-lg">${report.root_cause_findings || 'N/A'}</p></div>
                     <div class="col-span-2"><p class="text-xs font-semibold text-slate-400 uppercase">Action Taken</p><p style="white-space: break-spaces;" class="text-slate-700 bg-slate-50 p-3 rounded-lg">${report.action_taken || 'N/A'}</p></div>
                     <div class="col-span-2"><p class="text-xs font-semibold text-slate-400 uppercase">Recommendations</p><p style="white-space: break-spaces;" class="text-slate-700">${report.recommendations || 'N/A'}</p></div>
                     <div><p class="text-xs font-semibold text-slate-400 uppercase">Equipment Status</p><p><span class="inline-flex px-2.5 py-1 rounded-full text-xs ${report.equipment_status === 'Operational' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">${report.equipment_status}</span></p></div>
+                    </div>
+                    <div><p class="text-xs font-semibold text-slate-400 uppercase">Images Attached</p>
+                        <p class="text-slate-700" id="test_services_images">
+                            ${service_images_path}
+                        </p>
                     </div>
                 </div>
                 ${partsHtml}
