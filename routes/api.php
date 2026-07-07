@@ -1,7 +1,10 @@
 <?php
 
+use App\Models\Machine;
+use App\Models\ServiceReport;
 use App\Models\touchstarUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +26,25 @@ Route::post("/login/auth",function(Request $req){
     }
 });
 
+Route::get("/history/service/report",function(Request $req){
+
+    if(Auth::guard("sanctum")->check()){
+        #Get all Machines
+        $machines = Machine::all();
+
+        #Get 250 Service Report
+        $service_report = ServiceReport::offset(0)->limit(250)->get()->all();
+
+        $data = [
+            "machines" => $machines,
+            "service_report" => $service_report
+        ];
+        return response()->json($data);
+    }else{
+        return response()->json(["code"=>"401","message"=>"Unauthorized Access"]);
+    }
+});
+
 Route::post("/test",function(Request $req){
-    return response("test");
-})->middleware(["auth:sanctum"]);
+    dd(Auth::guard("sanctum")->check());
+});
