@@ -31,36 +31,67 @@
         </div>
 
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 mb-8 overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/40">
-                <h3 class="text-base font-semibold text-slate-700"><i class="fas fa-sliders-h mr-2 text-slate-500"></i>Filter Service Reports</h3>
-            </div>
-            <div class="p-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                    <div><label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Client Name</label>
-                        <select id="filterClient" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm focus:ring-2 focus:ring-blue-200 px-3 py-2">
+        <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/40">
+            <h3 class="text-base font-semibold text-slate-700"><i class="fas fa-sliders-h mr-2 text-slate-500"></i>Filter Service Reports</h3>
+        </div>
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Client Name</label>
+                    <select id="filterClient" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm focus:ring-2 focus:ring-blue-200 px-3 py-2">
                         <option value="">All Clients</option>
-                        <option>WellMed Diagnostics</option>
-                        <option>MetroHealth Labs</option>
-                        <option>St. Catherine Hospital</option>
-                        <option>Northside Imaging</option>
-                        <option>Makati Medical Center</option>
-                        </select>
-                    </div>
-                    <div><label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Serial Number</label><input type="text" id="filterSerial" placeholder="Enter serial number" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2"></div>
-                    <div><label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Location</label><select id="filterLocation" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2"><option value="">All Locations</option><option>Manila</option><option>Cebu</option><option>Davao</option><option>Laguna</option><option>Quezon City</option></select></div>
-                    <div><label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Service Type</label><select id="filterType" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2"><option value="">All Types</option><option>PMS</option><option>Troubleshooting</option><option>Installation</option><option>Warranty</option></select></div>
-                    <div><label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">From Date</label><input type="date" id="filterDateFrom" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2"></div>
-                    <div><label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">To Date</label><input type="date" id="filterDateTo" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2"></div>
-                    <div><label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Engineer</label><select id="filterEngineer" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2"><option value="">All Engineers</option><option>Michael Tan</option><option>Sarah Gomez</option><option>James Cruz</option><option>Patricia Lim</option><option>Anna Reyes</option></select></div>
-                    <div><label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Equipment Status</label><select id="filterStatus" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2"><option value="">All Status</option><option>Operational</option><option>Not Operational</option></select></div>
+                    </select>
                 </div>
-                <div class="mt-5"><label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Keyword (Issue / Action)</label><input type="text" id="filterKeyword" placeholder="Search root cause, findings, actions..." class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2"></div>
-                <div class="flex justify-between items-center mt-6 pt-4 border-t border-slate-100">
-                    <div class="text-sm text-slate-500"><span id="resultCount">0</span> records displayed</div>
-                    <div class="flex space-x-3"><button id="resetFiltersBtn" class="px-5 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium rounded-xl transition"><i class="fas fa-undo-alt mr-1"></i>Reset</button><button id="applyFiltersBtn" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl shadow-sm transition"><i class="fas fa-filter mr-1"></i>Apply Filters</button></div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Serial Number</label>
+                    <input type="text" id="filterSerial" placeholder="Enter serial number" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Service Type</label>
+                    <select id="filterType" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2">
+                        <option value="">All Types</option>
+                        <option>PMS</option>
+                        <option>Troubleshooting</option>
+                        <option>Installation</option>
+                        <option>Warranty</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">From Date</label>
+                    <input type="date" id="filterDateFrom" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">To Date</label>
+                    <input type="date" id="filterDateTo" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Engineer</label>
+                    <select id="filterEngineer" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2">
+                        <option value="">All Engineers</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Equipment Status</label>
+                    <select id="filterStatus" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2">
+                        <option value="">All Status</option>
+                        <option>Operational</option>
+                        <option>Not Operational</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-5">
+                <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1">Keyword (Issue / Action)</label>
+                <input type="text" id="filterKeyword" placeholder="Search root cause, findings, actions..." class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm px-3 py-2">
+            </div>
+            <div class="flex justify-between items-center mt-6 pt-4 border-t border-slate-100">
+                <div class="text-sm text-slate-500"><span id="resultCount">0</span> records displayed</div>
+                <div class="flex space-x-3">
+                    <button id="resetFiltersBtn" class="px-5 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium rounded-xl transition"><i class="fas fa-undo-alt mr-1"></i>Reset</button>
+                    <button id="applyFiltersBtn" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl shadow-sm transition"><i class="fas fa-filter mr-1"></i>Apply Filters</button>
                 </div>
             </div>
         </div>
+    </div>
 
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-100 bg-white flex justify-between items-center">
@@ -249,7 +280,7 @@
             const keyword = document.getElementById('filterKeyword').value.trim().toLowerCase();
 
             filteredData = MOCK_REPORTS.filter(r => {
-                if (client && r.client_name !== client) return false;
+                if (client && r.client_location !== client) return false;
                 if (serial && !r.serial_number.toLowerCase().includes(serial)) return false;
                 if (location && r.client_location !== location) return false;
                 if (serviceType && r.service_type !== serviceType) return false;

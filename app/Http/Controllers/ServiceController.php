@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Image;
 use Ramsey\Uuid\Uuid;
+use App\Models\touchstarClient;
+use Illuminate\Support\Facades\DB;
+
 
 class ServiceController extends Controller
 {
@@ -131,11 +134,57 @@ class ServiceController extends Controller
         //return redirect()->route('service.report')->with('success', 'Service report added successfully!');
     }
 
-    public function history(){
-        $employee_details = touchStarEmp::where('emp_id', Auth::guard('touchstaraccount')->user()->emp_id)->first();
-        $service_records = ServiceReport::orderByDesc('id')->offset(0)->limit(250)->get()->all();
-        $machines = Machine::all();
-         // Mock data for testing
-        return view('service.history',compact('employee_details','service_records','machines'));
-    }
+    // public function history(){
+    //     $employee_details = touchStarEmp::where('emp_id', Auth::guard('touchstaraccount')->user()->emp_id)->first();
+    //     $service_records = ServiceReport::orderByDesc('id')->offset(0)->limit(250)->get()->all();
+    //     $touchstar_client = touchstarClient::all();
+    //     $machines = Machine::all();
+    //      // Mock data for testing
+         
+    //     return view('service.history',compact('employee_details','service_records','machines'));
+    // }
+   
+    public function history(Request $request)
+        {
+            $employee_details = touchStarEmp::where('emp_id', Auth::guard('touchstaraccount')->user()->emp_id)->first();
+
+            $query = ServiceReport::query()
+                ->join('machines', 'service_records.machine_id', '=', 'machines.id')
+                ->join('touchstarclient', 'service_records.client_id', '=', 'touchstarclient.client_id')
+                ->leftJoin('touchstaremployee', 'service_records.completed_by_user_id', '=', 'touchstaremployee.emp_id')
+                ->select(
+                    'service_records.*',
+                    'machines.serial_number',
+                    'machines.model as machine_model',
+                    'touchstarclient.client_name',
+                    'touchstarclient.client_address',
+                    \DB::raw("CONCAT(touchstaremployee.emp_first_name, ' ', touchstaremployee.emp_last_name) as completed_by_name")
+                );
+
+            $query->when($request->filled('client'), fn($q) => $q->where('touchstarclient.client_name', $request->client));
+            $query->when($request->filled('serial'), fn($q) => $q->where('machines.serial_number', 'like', '%' . trim($request->serial) . '%'));
+            $query->when($request->filled('location'), fn($q) => $q->where('machines.client_location', $request->location));
+            $query->when($request->filled('service_type'), fn($q) => $q->where('service_records.service_type', $request->service_type));
+            $query->when($request->filled('date_from'), fn($q) => $q->whereDate('service_records.service_date', '>=', $request->date_from));
+            $query->when($request->filled('date_to'), fn($q) => $q->whereDate('service_records.service_date', '<=', $request->date_to));
+            $query->when($request->filled('engineer'), fn($q) => $q->where('service_records.service_engineer', $request->engineer));
+            $query->when($request->filled('eq_status'), fn($q) => $q->where('service_records.equipment_status', $request->eq_status));
+            $query->when($request->filled('keyword'), function ($q) use ($request) {
+                $keyword = trim($request->keyword);
+                $q->where(function ($sub) use ($keyword) {
+                    $sub->where('service_records.root_cause_findings', 'like', "%{$keyword}%")
+                        ->orWhere('service_records.action_taken', 'like', "%{$keyword}%")
+                        ->orWhere('service_records.recommendations', 'like', "%{$keyword}%");
+                });
+            });
+
+            $service_records = $query->orderByDesc('service_records.id')
+                ->limit(250)
+                ->get();
+
+            $machines = Machine::all();
+
+            return view('service.history', compact('employee_details', 'service_records', 'machines'));
+        }
+    
 }

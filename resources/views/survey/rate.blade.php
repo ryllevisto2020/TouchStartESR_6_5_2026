@@ -68,48 +68,12 @@
             </div>
 
             <form id="csatSurveyForm" novalidate>
-
                 {{-- Performance --}}
                 <div class="flex items-center gap-2 mb-3">
                     <span class="text-[9.5px] font-bold tracking-[.16em] uppercase text-[#C9A84C] whitespace-nowrap">Service performance evaluation</span>
                     <hr class="flex-1 border-none h-px bg-gradient-to-r from-[#C9A84C]/40 to-transparent">
                 </div>
-                <div class="border border-slate-200 rounded-xl overflow-hidden divide-y divide-slate-50 mb-5">
-                    @php
-                    $questions = [
-                        ['id'=>'csat_p1','label'=>'Service team responded promptly within Service Level Agreement','num'=>1],
-                        ['id'=>'csat_p2','label'=>'Issue was resolved correctly during first visit','num'=>2],
-                        ['id'=>'csat_p3','label'=>'Service engineer was professional and courteous','num'=>3],
-                        ['id'=>'csat_p4','label'=>'Engineer demonstrated strong technical knowledge','num'=>4],
-                        ['id'=>'csat_p5','label'=>'Preventive maintenance was performed thoroughly','sub'=>'if applicable','num'=>5,'optional'=>true],
-                        ['id'=>'csat_p6','label'=>'Findings and recommendations were clearly explained','num'=>6],
-                        ['id'=>'csat_p7','label'=>'Service report and documentation was accurate and complete','num'=>7],
-                    ];
-                    @endphp
-                    @foreach($questions as $q)
-                    <div id="row-{{ $q['id'] }}" class="flex items-center justify-between flex-wrap gap-2 px-4 py-3.5 bg-white hover:bg-amber-50/50 transition-colors">
-                        <div class="flex items-center gap-3 flex-1">
-                            <span class="w-6 h-6 rounded-full bg-[#1565c0] text-white text-[10px] font-semibold flex items-center justify-center flex-shrink-0">{{ $q['num'] }}</span>
-                            <span class="text-[.82rem] text-slate-800 leading-snug">
-                                {{ $q['label'] }}
-                                @isset($q['sub'])<em class="text-slate-400 not-italic text-[.7rem] ml-1">({{ $q['sub'] }})</em>@endisset
-                            </span>
-                        </div>
-                        <div class="csat-stars">
-                            @for($s=5;$s>=1;$s--)
-                            <input type="radio" name="{{ $q['id'] }}" id="{{ $q['id'] }}-{{ $s }}" value="{{ $s }}">
-                            <label for="{{ $q['id'] }}-{{ $s }}">★</label>
-                            @endfor
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-
-                {{-- Overall --}}
-                <div class="flex items-center gap-2 mb-3">
-                    <span class="text-[9.5px] font-bold tracking-[.16em] uppercase text-[#C9A84C] whitespace-nowrap">Overall scores</span>
-                    <hr class="flex-1 border-none h-px bg-gradient-to-r from-[#C9A84C]/40 to-transparent">
-                </div>
+            
                 <div class="bg-slate-50 border border-[#C9A84C]/25 rounded-xl px-4 py-3 divide-y divide-[#C9A84C]/10 mb-5">
                     <div id="row-csat_o1" class="flex items-center justify-between flex-wrap gap-2 py-3 pt-0">
                         <span class="text-[.82rem] font-semibold text-slate-800">Overall satisfaction with the service</span>
@@ -158,15 +122,8 @@
                 {{-- Contact --}}
                 <div class="mb-5">
                     <div class="text-[.82rem] font-medium text-slate-800 mb-2">May we contact you regarding your feedback?</div>
-                    <div class="flex gap-2">
-                        <label class="inline-flex items-center px-5 py-1.5 rounded-full border border-slate-300 text-[.8rem] font-semibold text-slate-700 cursor-pointer transition-all has-[:checked]:bg-[#0B1F3A] has-[:checked]:border-[#0B1F3A] has-[:checked]:text-white">
-                            <input type="radio" name="csat_contact" value="yes" class="hidden" onchange="csat_toggleContact('yes')"> Yes
-                        </label>
-                        <label class="inline-flex items-center px-5 py-1.5 rounded-full border border-slate-300 text-[.8rem] font-semibold text-slate-700 cursor-pointer transition-all has-[:checked]:bg-[#0B1F3A] has-[:checked]:border-[#0B1F3A] has-[:checked]:text-white">
-                            <input type="radio" name="csat_contact" value="no" class="hidden" checked onchange="csat_toggleContact('no')"> No
-                        </label>
-                    </div>
-                    <div id="csatContactFields" class="hidden grid-cols-2 gap-3 mt-3">
+                    
+                    <div id="csatContactFields" class="grid-cols-2 gap-3 mt-3">
                         <div>
                             <label class="block text-[9.5px] font-bold uppercase tracking-[.08em] text-slate-500 mb-1">Name</label>
                             <input type="text" name="contact_name" placeholder="Your name"
@@ -230,7 +187,7 @@
 {{-- ── Scoped JS — all functions prefixed csat_ ── --}}
 <script>
 (function () {
-    const REQUIRED = ['csat_p1','csat_p2','csat_p3','csat_p4','csat_p6','csat_p7','csat_o1','csat_o2'];
+    const REQUIRED = ['csat_o1','csat_o2'];
 
     function reset() {
         document.getElementById('csatSurveyForm').reset();
@@ -241,8 +198,6 @@
             if (el) { el.classList.add('hidden'); el.classList.remove('flex'); }
         });
 
-        const cf = document.getElementById('csatContactFields');
-        if (cf) { cf.classList.add('hidden'); cf.classList.remove('grid'); }
 
         const btn = document.getElementById('csatSubmitBtn');
         if (btn) {
@@ -289,13 +244,6 @@
 
     window.csat_handleOverlayClick = function (e) {
         if (e.target === document.getElementById('csatModalOverlay')) csat_close();
-    };
-
-    // ── Contact toggle ────────────────────────────────────────────
-    window.csat_toggleContact = function (val) {
-        const f = document.getElementById('csatContactFields');
-        if (val === 'yes') { f.classList.remove('hidden'); f.classList.add('grid'); }
-        else               { f.classList.add('hidden');    f.classList.remove('grid'); }
     };
 
     // ── Progress ──────────────────────────────────────────────────
