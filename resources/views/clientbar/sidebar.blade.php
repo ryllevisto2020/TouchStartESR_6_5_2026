@@ -94,12 +94,12 @@
             <div class="ml-3 flex-1 min-w-0">
                 <p class="text-sm font-medium text-white truncate">
                     @auth("touchstaraclientccount")
-                            {{-- {{$client_detail->client_name }} --}}
+                            {{$client_detail->client_name }}
                     @endauth
                 </p>
                 <p class="text-xs text-blue-200 font-medium truncate">
                     @auth("touchstaraclientccount")
-                        {{-- {{ strtoupper($client_detail->client_name) }} --}}
+                        {{ strtoupper($client_detail->client_name) }}
                     @else
                         GUEST
                     @endauth
