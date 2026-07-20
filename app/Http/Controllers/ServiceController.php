@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CsatQueue;
 use App\Models\Machine;
 use App\Models\ServiceReport;
 use App\Models\touchStarEmp;
@@ -17,6 +18,21 @@ use Illuminate\Support\Facades\DB;
 
 class ServiceController extends Controller
 {
+    public function AddCsatQueue($empId,$clientId){
+        //Check if Queue is Exist
+        $data = CsatQueue::where("client_id",$clientId)
+        ->where("emp_id",$empId)->get()->all();
+
+        if(!$data){
+            //No Queue Exist
+            CsatQueue::create([
+                "emp_id"=>$empId,
+                "client_id"=>$clientId
+            ]);
+        }else{
+
+        }
+    }
     public function report(){
         $employee_details = touchStarEmp::where('emp_id', Auth::guard('touchstaraccount')->user()->emp_id)->first();
         $machines = Machine::all();
@@ -98,6 +114,8 @@ class ServiceController extends Controller
 
         $client_id = Machine::where('id',$machine_id)->first();
 
+        $this->AddCsatQueue($emp_id->emp_id,$client_id->client_id);
+
         ServiceReport::create([
             'client_id' =>$client_id->client_id,
             'machine_id'=>$machine_id,
@@ -130,6 +148,8 @@ class ServiceController extends Controller
         Machine::where('id',$machine_id)->update([
             'status' => $equipment_status
         ]);
+
+
         return Response()->json(["message"=>200]);
         //return redirect()->route('service.report')->with('success', 'Service report added successfully!');
     }
@@ -140,10 +160,10 @@ class ServiceController extends Controller
     //     $touchstar_client = touchstarClient::all();
     //     $machines = Machine::all();
     //      // Mock data for testing
-         
+
     //     return view('service.history',compact('employee_details','service_records','machines'));
     // }
-   
+
     public function history(Request $request)
         {
             $employee_details = touchStarEmp::where('emp_id', Auth::guard('touchstaraccount')->user()->emp_id)->first();
@@ -186,5 +206,4 @@ class ServiceController extends Controller
 
             return view('service.history', compact('employee_details', 'service_records', 'machines'));
         }
-    
 }

@@ -35,15 +35,11 @@
                 >✕</button>
             </div>
             <div class="relative z-10 flex flex-wrap gap-1.5 mt-4">
-                <span class="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 text-white/80 text-[11px] px-2.5 py-1 rounded-full">
-                    <svg class="w-3 h-3 fill-none stroke-[#C9A84C]" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/></svg>
-                    Metro General Hospital
-                </span>
-                <span class="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 text-white/80 text-[11px] px-2.5 py-1 rounded-full">
+                <span class="servicePersonnel inline-flex items-center gap-1.5 bg-white/10 border border-white/20 text-white/80 text-[11px] px-2.5 py-1 rounded-full">
                     <svg class="w-3 h-3 fill-none stroke-[#C9A84C]" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                     Eng. R. Santos
                 </span>
-                <span class="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 text-white/80 text-[11px] px-2.5 py-1 rounded-full">
+                <span class="surveyDate inline-flex items-center gap-1.5 bg-white/10 border border-white/20 text-white/80 text-[11px] px-2.5 py-1 rounded-full">
                     <svg class="w-3 h-3 fill-none stroke-[#C9A84C]" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                     June 5, 2025
                 </span>
@@ -68,12 +64,14 @@
             </div>
 
             <form id="csatSurveyForm" novalidate>
+                {{-- Hidden --}}
+                <input class="surveyid" type="hidden" data-surveyid="1"/>
                 {{-- Performance --}}
                 <div class="flex items-center gap-2 mb-3">
                     <span class="text-[9.5px] font-bold tracking-[.16em] uppercase text-[#C9A84C] whitespace-nowrap">Service performance evaluation</span>
                     <hr class="flex-1 border-none h-px bg-gradient-to-r from-[#C9A84C]/40 to-transparent">
                 </div>
-            
+
                 <div class="bg-slate-50 border border-[#C9A84C]/25 rounded-xl px-4 py-3 divide-y divide-[#C9A84C]/10 mb-5">
                     <div id="row-csat_o1" class="flex items-center justify-between flex-wrap gap-2 py-3 pt-0">
                         <span class="text-[.82rem] font-semibold text-slate-800">Overall satisfaction with the service</span>
@@ -122,7 +120,7 @@
                 {{-- Contact --}}
                 <div class="mb-5">
                     <div class="text-[.82rem] font-medium text-slate-800 mb-2">May we contact you regarding your feedback?</div>
-                    
+
                     <div id="csatContactFields" class="grid-cols-2 gap-3 mt-3">
                         <div>
                             <label class="block text-[9.5px] font-bold uppercase tracking-[.08em] text-slate-500 mb-1">Name</label>
@@ -212,21 +210,35 @@
     }
 
     // ── Public open function ──────────────────────────────────────
+    $(document).ready(function(){
+        $(document).on("click",".openCsat",function(){
+            $surveyId = $(this).attr("data-surveyid")
+            $surveyDate = $(this).attr("data-surveydate")
+            $surveyPersonnel = $(this).attr("data-personnel")
+
+            reset();
+
+            const overlay = document.getElementById('csatModalOverlay');
+            const card    = document.getElementById('csatModalCard');
+
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+
+            // Re-trigger entrance animation cleanly
+            // card.classList.remove('csat-card-in');
+            void card.offsetWidth;
+            card.classList.add('csat-card-in');
+            document.body.style.overflow = 'hidden';
+
+
+            $(".surveyid").attr("data-surveyid",$surveyId)
+            $(".servicePersonnel").text($surveyPersonnel)
+            $(".surveyDate").text($surveyDate)
+            console.log(questionaire)
+        })
+    })
     window.openCsatModal = function () {
-        reset();
 
-        const overlay = document.getElementById('csatModalOverlay');
-        const card    = document.getElementById('csatModalCard');
-
-        overlay.classList.remove('hidden');
-        overlay.classList.add('flex');
-
-        // Re-trigger entrance animation cleanly
-        card.classList.remove('csat-card-in');
-        void card.offsetWidth;
-        card.classList.add('csat-card-in');
-
-        document.body.style.overflow = 'hidden';
     };
 
     // Alias for landing page card onclick="openModal()"

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <meta name="theme-color" content="#3B82F6">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -49,7 +50,7 @@
             display: flex;
             flex-direction: column;
         }
-        
+
         .sidebar-closed {
             transform: translateX(-16rem);
         }
@@ -123,16 +124,16 @@
 
         /* Mobile responsive - FIXED */
         @media (max-width: 768px) {
-            .sidebar { 
-                transform: translateX(-16rem); 
+            .sidebar {
+                transform: translateX(-16rem);
                 box-shadow: none;
             }
-            .sidebar.mobile-open { 
+            .sidebar.mobile-open {
                 transform: translateX(0);
                 box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             }
-            .main-content { 
-                margin-left: 0; 
+            .main-content {
+                margin-left: 0;
                 width: 100%;
             }
             .main-content-expanded {
@@ -167,19 +168,19 @@
         .sidebar::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
 
         /* Notification dropdown */
-        #notificationDropdown { 
-            animation: slideDown 0.3s ease-out; 
+        #notificationDropdown {
+            animation: slideDown 0.3s ease-out;
             position: absolute;
             right: 1rem;
             top: 4rem;
             z-index: 50;
         }
-        
-        @keyframes slideDown { 
-            from {opacity: 0; transform: translateY(-10px);} 
-            to {opacity:1; transform: translateY(0);} 
+
+        @keyframes slideDown {
+            from {opacity: 0; transform: translateY(-10px);}
+            to {opacity:1; transform: translateY(0);}
         }
-        
+
         .notification-item { transition: all 0.2s; }
         .notification-item:hover { background-color: #f9fafb; }
         .notification-item.critical { background-color: #fef2f2; border-left: 4px solid #dc2626; }
@@ -210,7 +211,7 @@
 
     {{-- Main Content --}}
     <div class="main-content" id="mainContent">
-        
+
         {{-- Navbar Partial --}}
         @include('clientbar.navbar')
 
@@ -222,7 +223,7 @@
         {{-- Footer Partial --}}
         @include('clientbar.footer')
     </div>
-  
+
     {{-- JavaScript --}}
     <script>
         // Toggle dropdown
@@ -283,15 +284,15 @@
 
         // Notification dropdown
         let notificationDropdownOpen = false;
-        
+
         function toggleNotificationDropdown() {
             const dropdown = document.getElementById('notificationDropdown');
-            if (notificationDropdownOpen) { 
-                dropdown.classList.add('hidden'); 
-                notificationDropdownOpen = false; 
-            } else { 
-                dropdown.classList.remove('hidden'); 
-                notificationDropdownOpen = true; 
+            if (notificationDropdownOpen) {
+                dropdown.classList.add('hidden');
+                notificationDropdownOpen = false;
+            } else {
+                dropdown.classList.remove('hidden');
+                notificationDropdownOpen = true;
             }
         }
 
@@ -299,7 +300,7 @@
             const dropdown = document.getElementById('notificationDropdown');
             const button = document.getElementById('notificationButton');
 
-            if (notificationDropdownOpen && dropdown && button && 
+            if (notificationDropdownOpen && dropdown && button &&
                 !dropdown.contains(event.target) && !button.contains(event.target)) {
                 dropdown.classList.add('hidden');
                 notificationDropdownOpen = false;
@@ -335,7 +336,7 @@
                 sidebar.classList.remove('mobile-open');
                 backdrop.classList.remove('show');
                 document.body.style.overflow = '';
-                
+
                 if (!sidebar.classList.contains('sidebar-closed')) {
                     mainContent.classList.remove('main-content-expanded');
                 }
