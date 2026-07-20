@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\CSATController;
 use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MachineController;
@@ -11,13 +12,17 @@ use App\Http\Middleware\isAuthClient;
 use App\Http\Middleware\isAuthEmployee;
 use App\Http\Middleware\isLogin;
 use App\Http\Middleware\isLoginClient;
+use App\Models\CsatQuestionaire;
+use App\Models\CsatSurvey;
 use App\Models\Machine;
 use App\Models\ServiceReport;
 use App\Models\touchstarClient;
 use App\Models\touchStarEmp;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Schedule;
 
 #FOR TESTING
 Route::get("/upload",function(){
@@ -216,3 +221,28 @@ Route::get('/admin/ticket', function(){
 Route::get('/client/ticket', function(){
     return view('clients.ticket');
 })->name('client.ticket');
+
+//Route::get("/test/{empId}/{clientId}",[ServiceController::class,"AddCsatQueue"]);
+
+Route::get("/survey/pending",function(Request $req){
+
+    $pendingData = CsatSurvey::where("client_id",Auth::guard("touchstaraclientccount")->user()->client_id)
+    ->where("survey_status","PENDING")->get()->all();
+
+    $pendingList = [];
+    for ($i=0; $i < count($pendingData) ; $i++) {
+        $emp = touchStarEmp::where("emp_id",$pendingData[$i]->emp_id)->get()->first();
+        $emp_name = $emp->emp_first_name." ".$emp->emp_last_name;
+        $pendingList[] = [
+            "survey_id"=>$pendingData[$i]->survey_id,
+            "emp_name"=>$emp_name,
+            "survey_date"=>$pendingData[$i]->survey_date
+            ];
+    }
+
+    $questionaireRating = CsatQuestionaire::where("question_type","RATING")->get()->all();
+    $questionaireInput = CsatQuestionaire::where("question_type","INPUT")->get()->all();
+
+
+    return response()->json(["pending"=>$pendingList,"questionaire"=>["rating"=>$questionaireRating,"input"=>$questionaireInput]]);
+})->middleware([isAuthClient::class]);

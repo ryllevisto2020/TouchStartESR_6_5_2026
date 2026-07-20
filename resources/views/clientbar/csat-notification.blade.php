@@ -16,7 +16,7 @@
 
                 <span class="absolute -top-1 -right-1 flex items-center justify-center
                             min-w-[18px] h-[18px] px-1 bg-red-500 text-white text-[9px] font-bold
-                            rounded-full border-2 border-white animate-pulse">1</span>
+                            rounded-full border-2 border-white animate-pulse pendingCount"></span>
         </button>
 
     {{-- Dropdown --}}
@@ -38,35 +38,12 @@
                 </svg>
                 <span class="text-white text-sm font-semibold">Satisfaction Surveys</span>
             </div>
-            <span class="text-[9px] font-bold bg-red-500 text-white px-2 py-0.5 rounded-full">1 Pending</span>
+            <span class="text-[9px] font-bold bg-red-500 text-white px-2 py-0.5 rounded-full pendingCount_a"></span>
         </div>
 
         {{-- List --}}
-        <div class="max-h-72 overflow-y-auto divide-y divide-gray-50">
-            <a
-                href="#"
-                onclick="toggleBellDropdown(); openCsatModal(); return false;"
-                class="flex items-start gap-3 px-4 py-3 hover:bg-amber-50 transition-colors group cursor-pointer"
-            >
-                <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center mt-0.5">
-                    <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2
-                                 M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                    </svg>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-gray-800 truncate group-hover:text-[#0B1F3A]">
-                        Preventive Maintenance
-                    </p>
-                    <p class="text-xs text-gray-500 mt-0.5">Engineer: Juan Dela Cruz</p>
-                    <p class="text-xs text-gray-400">June 9, 2025</p>
-                </div>
-                <svg class="w-4 h-4 text-gray-300 group-hover:text-[#C9A84C] flex-shrink-0 mt-1 transition-colors"
-                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                </svg>
-            </a>
+        <div class="max-h-72 overflow-y-auto divide-y divide-gray-50 pendingListView">
+            {{-- Render List --}}
         </div>
 
         {{-- Footer --}}
@@ -84,6 +61,61 @@
 </div>
 @include('survey.rate')
 <script>
+    let questionaire;
+$(document).ready(async function () {
+    async function getPending(){
+        try {
+                let res = await $.ajax({
+                    type: "GET",
+                    url: "/survey/pending",
+                    dataType: "json",
+                    contentType: "application/json",
+                });
+                return res;
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+    let pendingList = await getPending()
+    questionaire = pendingList.questionaire
+    console.log(pendingList);
+    for (let index = 0; index < pendingList.pending.length; index++) {
+        $(".pendingListView").append(
+        `            <a
+                href="#"
+                onclick="toggleBellDropdown(); return false;"
+                class="openCsat flex items-start gap-3 px-4 py-3 hover:bg-amber-50 transition-colors group cursor-pointer"
+                data-surveyid = "${pendingList.pending[index].survey_id}"
+                data-surveydate = "${pendingList.pending[index].survey_date}"
+                data-personnel = "${pendingList.pending[index].emp_name}"
+            >
+                <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center mt-0.5">
+                    <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2
+                                 M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div >
+                        <p class="text-sm font-medium text-gray-800 truncate group-hover:text-[#0B1F3A]">
+                            Customer Satisfaction Survey
+                        </p>
+                        <p class="text-xs text-gray-500 mt-0.5">Service Personel: ${pendingList.pending[index].emp_name}</p>
+                        <p class="text-xs text-gray-400">${pendingList.pending[index].survey_date}</p>
+                    </div>
+                </div>
+                <svg class="w-4 h-4 text-gray-300 group-hover:text-[#C9A84C] flex-shrink-0 mt-1 transition-colors"
+                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </a>`
+        )
+    }
+    $(".pendingCount").text(pendingList.pending.length)
+    $(".pendingCount_a").text(`${pendingList.pending.length} Pending`)
+});
 document.addEventListener('DOMContentLoaded', function () {
 
     window.toggleBellDropdown = function () {
