@@ -1,388 +1,632 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CSAT Survey — Touchstar Medical</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+@extends('layouts.app')
+@section('title', 'Customer Satisfaction Results')
+@section('content')
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#1565c0;--gold:#C9A84C;--gold-pale:#FBF6E9;--radius-md:8px;--radius-lg:12px}
-body{font-family:'DM Sans',system-ui,sans-serif;background:#f0f4fa;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem 4rem}
-.survey-wrap{max-width:720px;width:100%}
-.header-bar{background:var(--navy);border-radius:var(--radius-lg) var(--radius-lg) 0 0;border-bottom:3px solid var(--gold);padding:1.75rem 2rem}
-.header-logo-row{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}
-.org-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(201,168,76,0.18);border:1px solid rgba(201,168,76,0.4);color:#F3E6B2;font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:4px 12px;border-radius:999px;margin-bottom:8px}
-.header-title{font-size:1.6rem;font-weight:500;color:#fff;line-height:1.2}
-.header-sub{font-size:0.82rem;color:rgba(255,255,255,0.65);margin-top:6px;line-height:1.6;max-width:420px}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:1rem}
-.chip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);font-size:11px;padding:4px 10px;border-radius:999px}
-.chip i{color:var(--gold);font-size:13px}
-.card-body{background:#fff;border:0.5px solid #e2e8f0;border-top:none;border-radius:0 0 var(--radius-lg) var(--radius-lg);padding:1.75rem 2rem}
-.legend-bar{display:flex;flex-wrap:wrap;gap:10px;background:#f8f9fa;border:0.5px solid #e2e8f0;border-radius:var(--radius-md);padding:.7rem 1rem;margin-bottom:1.5rem}
-.legend-bar span{font-size:11px;color:#64748b;display:flex;align-items:center;gap:4px}
-.legend-bar .star-txt{color:var(--gold);font-size:13px}
-.section-label{display:flex;align-items:center;gap:8px;margin-bottom:1rem}
-.section-label span{font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold)}
-.section-label hr{flex:1;border:none;height:0.5px;background:#e2e8f0}
-.question-list{border:0.5px solid #e2e8f0;border-radius:var(--radius-md);overflow:hidden;margin-bottom:1.5rem}
-.q-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;padding:.9rem 1.1rem;border-bottom:0.5px solid #f0f2f6;background:#fff;transition:background .15s}
-.q-row:last-child{border-bottom:none}
-.q-row:hover{background:#f8f9fa}
-.q-left{display:flex;align-items:center;gap:.75rem;flex:1;min-width:0}
-.q-num{width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.q-text{font-size:.835rem;color:#1f2a3f;line-height:1.4}
-.q-sub{font-size:.72rem;color:#64748b;font-style:normal;margin-left:4px}
-.star-group{display:flex;gap:3px;flex-direction:row-reverse}
-.star-group input{display:none}
-.star-group label{cursor:pointer;font-size:1.5rem;color:#DDE1EA;transition:color .15s;line-height:1}
-.star-group input:checked ~ label,
-.star-group label:hover,
-.star-group label:hover ~ label{color:var(--gold)}
-.overall-box{background:#f8f9fa;border:0.5px solid rgba(201,168,76,0.3);border-radius:var(--radius-md);padding:1rem 1.25rem;margin-bottom:1.5rem}
-.overall-box .q-row{background:transparent;border-color:rgba(201,168,76,0.15);padding:.75rem 0}
-.overall-box .q-row:first-child{padding-top:0}
-.overall-box .q-row:last-child{border-bottom:none;padding-bottom:0}
-.overall-box .q-text{font-weight:500}
-textarea{width:100%;border:0.5px solid #cbd5e0;border-radius:var(--radius-md);padding:.65rem .85rem;font-size:.84rem;color:#1f2a3f;background:#f8f9fa;resize:none;transition:border-color .2s;font-family:inherit;line-height:1.5}
-textarea:focus{outline:none;border-color:var(--gold);background:#fff;box-shadow:0 0 0 3px rgba(201,168,76,0.12)}
-.txt-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#64748b;margin-bottom:6px;display:flex;align-items:center;gap:8px}
-.opt-pill{font-size:10px;background:rgba(201,168,76,0.1);border:0.5px solid rgba(201,168,76,0.35);color:#9A7D34;padding:2px 8px;border-radius:999px;font-weight:500;text-transform:lowercase;letter-spacing:0}
-.textarea-wrap{margin-bottom:.9rem}
-.contact-row{margin-bottom:1.5rem}
-.contact-q{font-size:.84rem;font-weight:500;color:#1f2a3f;margin-bottom:.6rem}
-.pill-group{display:flex;gap:.5rem}
-.cpill{display:inline-flex;align-items:center;padding:.4rem 1.4rem;border-radius:999px;border:0.5px solid #cbd5e0;font-size:.84rem;font-weight:500;color:#2d4059;cursor:pointer;transition:all .15s}
-.cpill input{display:none}
-.cpill.active{background:var(--navy);border-color:var(--navy);color:#fff}
-.contact-fields{display:none;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.75rem}
-.contact-fields.show{display:grid}
-.cf-group label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#64748b;display:block;margin-bottom:4px}
-.cf-group input{width:100%;border:none;border-bottom:1px solid var(--navy);background:transparent;padding:.4rem 0;font-size:.84rem;color:#1f2a3f;font-family:inherit}
-.cf-group input:focus{outline:none;border-bottom-width:2px}
-.err-bar{display:none;align-items:center;gap:.5rem;background:#FEF2F2;border:0.5px solid #fca5a5;color:#991b1b;border-radius:var(--radius-md);padding:.7rem 1rem;font-size:.84rem;margin-bottom:1rem}
-.err-bar.show{display:flex}
-.submit-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;padding-top:1.25rem;border-top:0.5px solid #e2e8f0}
-.privacy-note{font-size:.72rem;color:#64748b;display:flex;align-items:center;gap:6px}
-.privacy-note i{color:#059669;font-size:15px}
-.submit-btn{display:inline-flex;align-items:center;gap:6px;padding:.55rem 1.5rem;border-radius:999px;background:var(--navy);color:#fff;font-size:.82rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;border:none;cursor:pointer;transition:opacity .2s,transform .2s}
-.submit-btn:hover{opacity:.88;transform:translateY(-1px)}
-.submit-btn:disabled{opacity:.55;pointer-events:none}
-.success-bar{display:none;align-items:center;gap:.75rem;background:#ECFDF5;border:0.5px solid #6ee7b7;color:#065f46;border-radius:var(--radius-md);padding:.9rem 1.1rem;font-size:.84rem;font-weight:500;margin-top:1rem}
-.success-bar.show{display:flex}
-.success-icon{width:28px;height:28px;border-radius:50%;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.progress-bar-wrap{height:4px;background:#e2e8f0;border-radius:999px;margin-bottom:1.5rem;overflow:hidden}
-.progress-fill{height:100%;background:var(--gold);border-radius:999px;transition:width .3s ease;width:0%}
-.rating-error .star-group label{color:#fca5a5 !important}
-@keyframes spin{to{transform:rotate(360deg)}}
+  /* Read-only star rating used inside the employee tracking modal */
+  .ec-stars-readonly { display: inline-flex; gap: 1px; }
+  .ec-stars-readonly .ec-star { font-size: 13px; line-height: 1; color: #e4e4e7; }
+  .ec-stars-readonly .ec-star.filled { color: #C9A84C; }
+
+  #employeeCsatModal.is-open { display: block; }
+
+  /* Monthly bar chart */
+  .csat-bar-chart { align-items: flex-end; }
+  .csat-bar-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; flex: 1; height: 100%; gap: 4px; }
+  .csat-bar-pair { display: flex; align-items: flex-end; gap: 3px; height: 100%; }
+  .csat-bar { width: 9px; border-radius: 3px 3px 0 0; transition: opacity .15s ease; }
+  .csat-bar-2026 { background: #18181b; }
+  .csat-bar-2025 { background: #e4e4e7; }
+  .csat-bar-pair:hover .csat-bar { opacity: .75; }
+  .csat-bar-labels span { font-size: 10px; color: #a1a1aa; flex: 1; text-align: center; }
+
+  /* Top performers */
+  .top-performer-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f4f4f5; }
+  .top-performer-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .top-performer-rank { width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
 </style>
-</head>
-<body>
+ <header class="flex items-center justify-between">
+    <div>
+        <h2 class="text-2xl font-bold italic text-slate-800">
+            Customer Satisfaction
+        </h2>
+        <p class="text-sm text-slate-500 mt-1">
+            Monitor customer feedback, ratings and response trends.
+        </p>
+    </div>   
+</header>
 
-<div class="survey-wrap">
-  <div class="header-bar">
-    <div class="header-logo-row">
-      <div>
-        <div class="org-badge"><i class="ti ti-star"></i> Technical Services Division</div>
-        <div class="header-title">Post-Service Customer<br>Satisfaction Survey</div>
-        <div class="header-sub">Your insight helps us refine our medical service excellence — it takes less than 2 minutes.</div>
+<!-- Full Width Main Content -->
+<div class="w-full flex flex-col">
+  <!-- Page Content -->
+  <main class="flex-1 px-8 py-8 space-y-6">
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="bg-white rounded-xl border border-zinc-200 p-5">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-medium text-zinc-400 uppercase tracking-wider">Avg CSAT Score</span>
+          <div class="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center">
+            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+            </svg>
+          </div>
+        </div>
+        <p class="text-2xl font-bold text-zinc-900">4.6 / 5</p>
+        <p class="text-xs text-emerald-600 mt-1 font-medium">+0.2 from last month</p>
       </div>
-      <button onclick="handleClose()" style="background:rgba(255,255,255,0.1);border:0.5px solid rgba(255,255,255,0.25);border-radius:50%;width:34px;height:34px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0" aria-label="Close survey">
-        <i class="ti ti-x" style="font-size:14px"></i>
-      </button>
+      <div class="bg-white rounded-xl border border-zinc-200 p-5">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-medium text-zinc-400 uppercase tracking-wider">Total Responses</span>
+          <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+            </svg>
+          </div>
+        </div>
+        <p class="text-2xl font-bold text-zinc-900">3,842</p>
+        <p class="text-xs text-emerald-600 mt-1 font-medium">+18.4% from last month</p>
+      </div>
+      <div class="bg-white rounded-xl border border-zinc-200 p-5">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-medium text-zinc-400 uppercase tracking-wider">Satisfaction Rate</span>
+          <div class="w-8 h-8 bg-violet-50 rounded-lg flex items-center justify-center">
+            <svg class="w-4 h-4 text-violet-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+        </div>
+        <p class="text-2xl font-bold text-zinc-900">87.3%</p>
+        <p class="text-xs text-emerald-600 mt-1 font-medium">+3.1% from last month</p>
+      </div>
+      <div class="bg-white rounded-xl border border-zinc-200 p-5">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-medium text-zinc-400 uppercase tracking-wider">Detractors</span>
+          <div class="w-8 h-8 bg-rose-50 rounded-lg flex items-center justify-center">
+            <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5"></path>
+            </svg>
+          </div>
+        </div>
+        <p class="text-2xl font-bold text-zinc-900">5.2%</p>
+        <p class="text-xs text-red-500 mt-1 font-medium">-0.8% from last month</p>
+      </div>
     </div>
-    <div class="chips">
-      <span class="chip"><i class="ti ti-building-hospital"></i> Metro General Hospital</span>
-      <span class="chip"><i class="ti ti-user"></i> Eng. R. Santos</span>
-      <span class="chip"><i class="ti ti-calendar"></i> June 7, 2025</span>
+
+    <!-- Charts Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-1 gap-5">
+      <!-- Donut Chart - Score Distribution -->
+      <div class="bg-white rounded-xl border border-zinc-200 p-5">
+        <div class="mb-4">
+          <h2 class="text-sm font-semibold text-zinc-900">Score Distribution</h2>
+          <p class="text-xs text-zinc-400 mt-0.5">Breakdown of ratings</p>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="relative w-36 h-36">
+            <svg viewBox="0 0 36 36" class="w-36 h-36 -rotate-90">
+              <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#f4f4f5" stroke-width="3.5"></circle>
+              <circle class="donut-seg-5" cx="18" cy="18" r="15.9155" fill="none" stroke="#16a34a" stroke-width="3.5" stroke-dasharray="42 58" stroke-dashoffset="0"></circle>
+              <circle class="donut-seg-4" cx="18" cy="18" r="15.9155" fill="none" stroke="#4ade80" stroke-width="3.5" stroke-dasharray="28 72" stroke-dashoffset="-42"></circle>
+              <circle class="donut-seg-3" cx="18" cy="18" r="15.9155" fill="none" stroke="#fbbf24" stroke-width="3.5" stroke-dasharray="17 83" stroke-dashoffset="-70"></circle>
+              <circle class="donut-seg-2" cx="18" cy="18" r="15.9155" fill="none" stroke="#f87171" stroke-width="3.5" stroke-dasharray="8 92" stroke-dashoffset="-87"></circle>
+              <circle class="donut-seg-1" cx="18" cy="18" r="15.9155" fill="none" stroke="#ef4444" stroke-width="3.5" stroke-dasharray="5 95" stroke-dashoffset="-95"></circle>
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+              <span class="text-xl font-bold text-zinc-900">4.6</span>
+              <span class="text-xs text-zinc-400">avg score</span>
+            </div>
+          </div>
+          <div class="mt-4 w-full space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-green-600 inline-block"></span><span class="text-zinc-600">5 Stars</span></div>
+              <span class="font-semibold text-zinc-900">42%</span>
+            </div>
+            <div class="flex items-center justify-between text-xs">
+              <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-green-400 inline-block"></span><span class="text-zinc-600">4 Stars</span></div>
+              <span class="font-semibold text-zinc-900">28%</span>
+            </div>
+            <div class="flex items-center justify-between text-xs">
+              <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-amber-400 inline-block"></span><span class="text-zinc-600">3 Stars</span></div>
+              <span class="font-semibold text-zinc-900">17%</span>
+            </div>
+            <div class="flex items-center justify-between text-xs">
+              <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-red-400 inline-block"></span><span class="text-zinc-600">2 Stars</span></div>
+              <span class="font-semibold text-zinc-900">8%</span>
+            </div>
+            <div class="flex items-center justify-between text-xs">
+              <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-red-500 inline-block"></span><span class="text-zinc-600">1 Star</span></div>
+              <span class="font-semibold text-zinc-900">5%</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <div class="card-body">
-    <div class="progress-bar-wrap"><div class="progress-fill" id="progressFill"></div></div>
-
-    <div class="legend-bar">
-      <span><span class="star-txt">★</span> Very dissatisfied</span>
-      <span><span class="star-txt">★★</span> Dissatisfied</span>
-      <span><span class="star-txt">★★★</span> Neutral</span>
-      <span><span class="star-txt">★★★★</span> Satisfied</span>
-      <span><span class="star-txt">★★★★★</span> Very satisfied</span>
+    <!-- Employee CSAT Table -->
+    <div class="bg-white rounded-xl border border-zinc-200">
+      <div class="px-5 py-4 border-b border-zinc-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <h2 class="text-sm font-semibold text-zinc-900">Employee CSAT Details</h2>
+          <p class="text-xs text-zinc-400 mt-0.5">Individual performance &amp; satisfaction scores</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="relative">
+            <svg class="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <input type="text" placeholder="Search employees..." class="pl-9 pr-4 py-2 text-sm border border-zinc-200 rounded-lg bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-zinc-900/10 w-full sm:w-56 transition-all employee-search-input"/>
+          </div>
+          <select class="text-sm border border-zinc-200 rounded-lg px-3 py-2 bg-zinc-50 text-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-900/10 employee-dept-filter">
+            <option value="">All Departments</option>
+            <option value="support">Support</option>
+            <option value="sales">Sales</option>
+            <option value="tech">Tech</option>
+          </select>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-zinc-100 bg-zinc-50/50">
+              <th class="text-left px-5 py-3 text-xs font-medium text-zinc-400 uppercase tracking-wider">Employee</th>
+              <th class="text-left px-5 py-3 text-xs font-medium text-zinc-400 uppercase tracking-wider hidden sm:table-cell">Department</th>
+              <th class="text-left px-5 py-3 text-xs font-medium text-zinc-400 uppercase tracking-wider">CSAT Score</th>
+              <th class="text-left px-5 py-3 text-xs font-medium text-zinc-400 uppercase tracking-wider hidden md:table-cell">Responses</th>
+              <th class="text-left px-5 py-3 text-xs font-medium text-zinc-400 uppercase tracking-wider hidden lg:table-cell">Satisfaction</th>
+              <th class="text-left px-5 py-3 text-xs font-medium text-zinc-400 uppercase tracking-wider hidden lg:table-cell">Trend</th>
+              <th class="text-left px-5 py-3 text-xs font-medium text-zinc-400 uppercase tracking-wider">Status</th>
+              <th class="text-right px-5 py-3 text-xs font-medium text-zinc-400 uppercase tracking-wider">Action</th>
+            </tr>
+          </thead>
+          <tbody class="employee-table-body"><!-- Rows injected by JS --></tbody>
+        </table>
+      </div>
+      <div class="px-5 py-4 border-t border-zinc-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <p class="text-xs text-zinc-400 employee-count-label">Showing 8 of 24 employees</p>
+        <div class="flex items-center gap-1 employee-pagination">
+          <button class="px-3 py-1.5 text-xs text-zinc-400 border border-zinc-200 rounded-lg hover:bg-zinc-50 transition-colors cursor-pointer">Previous</button>
+          <button class="px-3 py-1.5 text-xs bg-zinc-900 text-white rounded-lg cursor-pointer">1</button>
+          <button class="px-3 py-1.5 text-xs text-blue-500 border border-blue-200 rounded-lg hover:bg-zinc-50 transition-colors cursor-pointer">Next</button>
+        </div>
+      </div>
     </div>
 
-    <form id="csatForm" novalidate>
-
-      <!-- SERVICE PERFORMANCE -->
-      <div class="section-label"><span>Service performance evaluation</span><hr></div>
-      <div class="question-list">
-
-        <div class="q-row" id="row-perf1">
-          <div class="q-left"><span class="q-num">1</span><span class="q-text">Service team responded promptly within SLA</span></div>
-          <div class="star-group" data-name="perf1" data-required="true">
-            <input type="radio" name="perf1" id="p1-5" value="5"><label for="p1-5" title="5 stars">★</label>
-            <input type="radio" name="perf1" id="p1-4" value="4"><label for="p1-4" title="4 stars">★</label>
-            <input type="radio" name="perf1" id="p1-3" value="3"><label for="p1-3" title="3 stars">★</label>
-            <input type="radio" name="perf1" id="p1-2" value="2"><label for="p1-2" title="2 stars">★</label>
-            <input type="radio" name="perf1" id="p1-1" value="1"><label for="p1-1" title="1 star">★</label>
+    <!-- Bottom Row: Top Performers + Recent Feedback -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <!-- Top Performers -->
+      <div class="bg-white rounded-xl border border-zinc-200 p-5">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-sm font-semibold text-zinc-900">Top Performers</h2>
+            <p class="text-xs text-zinc-400 mt-0.5">Highest CSAT scores this month</p>
           </div>
+          <span class="text-xs text-zinc-400 bg-zinc-50 border border-zinc-200 px-2 py-1 rounded-lg">January 2026</span>
         </div>
-
-        <div class="q-row" id="row-perf2">
-          <div class="q-left"><span class="q-num">2</span><span class="q-text">Issue was resolved correctly during first visit</span></div>
-          <div class="star-group" data-name="perf2" data-required="true">
-            <input type="radio" name="perf2" id="p2-5" value="5"><label for="p2-5">★</label>
-            <input type="radio" name="perf2" id="p2-4" value="4"><label for="p2-4">★</label>
-            <input type="radio" name="perf2" id="p2-3" value="3"><label for="p2-3">★</label>
-            <input type="radio" name="perf2" id="p2-2" value="2"><label for="p2-2">★</label>
-            <input type="radio" name="perf2" id="p2-1" value="1"><label for="p2-1">★</label>
-          </div>
-        </div>
-
-        <div class="q-row" id="row-perf3">
-          <div class="q-left"><span class="q-num">3</span><span class="q-text">Service engineer was professional and courteous</span></div>
-          <div class="star-group" data-name="perf3" data-required="true">
-            <input type="radio" name="perf3" id="p3-5" value="5"><label for="p3-5">★</label>
-            <input type="radio" name="perf3" id="p3-4" value="4"><label for="p3-4">★</label>
-            <input type="radio" name="perf3" id="p3-3" value="3"><label for="p3-3">★</label>
-            <input type="radio" name="perf3" id="p3-2" value="2"><label for="p3-2">★</label>
-            <input type="radio" name="perf3" id="p3-1" value="1"><label for="p3-1">★</label>
-          </div>
-        </div>
-
-        <div class="q-row" id="row-perf4">
-          <div class="q-left"><span class="q-num">4</span><span class="q-text">Engineer demonstrated strong technical knowledge</span></div>
-          <div class="star-group" data-name="perf4" data-required="true">
-            <input type="radio" name="perf4" id="p4-5" value="5"><label for="p4-5">★</label>
-            <input type="radio" name="perf4" id="p4-4" value="4"><label for="p4-4">★</label>
-            <input type="radio" name="perf4" id="p4-3" value="3"><label for="p4-3">★</label>
-            <input type="radio" name="perf4" id="p4-2" value="2"><label for="p4-2">★</label>
-            <input type="radio" name="perf4" id="p4-1" value="1"><label for="p4-1">★</label>
-          </div>
-        </div>
-
-        <div class="q-row" id="row-perf5">
-          <div class="q-left"><span class="q-num">5</span><span class="q-text">Preventive maintenance was performed thoroughly <em class="q-sub">(if applicable)</em></span></div>
-          <div class="star-group" data-name="perf5" data-required="false">
-            <input type="radio" name="perf5" id="p5-5" value="5"><label for="p5-5">★</label>
-            <input type="radio" name="perf5" id="p5-4" value="4"><label for="p5-4">★</label>
-            <input type="radio" name="perf5" id="p5-3" value="3"><label for="p5-3">★</label>
-            <input type="radio" name="perf5" id="p5-2" value="2"><label for="p5-2">★</label>
-            <input type="radio" name="perf5" id="p5-1" value="1"><label for="p5-1">★</label>
-          </div>
-        </div>
-
-        <div class="q-row" id="row-perf6">
-          <div class="q-left"><span class="q-num">6</span><span class="q-text">Findings and recommendations were clearly explained</span></div>
-          <div class="star-group" data-name="perf6" data-required="true">
-            <input type="radio" name="perf6" id="p6-5" value="5"><label for="p6-5">★</label>
-            <input type="radio" name="perf6" id="p6-4" value="4"><label for="p6-4">★</label>
-            <input type="radio" name="perf6" id="p6-3" value="3"><label for="p6-3">★</label>
-            <input type="radio" name="perf6" id="p6-2" value="2"><label for="p6-2">★</label>
-            <input type="radio" name="perf6" id="p6-1" value="1"><label for="p6-1">★</label>
-          </div>
-        </div>
-
-        <div class="q-row" id="row-perf7">
-          <div class="q-left"><span class="q-num">7</span><span class="q-text">Service report and documentation was accurate and complete</span></div>
-          <div class="star-group" data-name="perf7" data-required="true">
-            <input type="radio" name="perf7" id="p7-5" value="5"><label for="p7-5">★</label>
-            <input type="radio" name="perf7" id="p7-4" value="4"><label for="p7-4">★</label>
-            <input type="radio" name="perf7" id="p7-3" value="3"><label for="p7-3">★</label>
-            <input type="radio" name="perf7" id="p7-2" value="2"><label for="p7-2">★</label>
-            <input type="radio" name="perf7" id="p7-1" value="1"><label for="p7-1">★</label>
-          </div>
-        </div>
-
+        <div class="space-y-3 top-performers-list"><!-- Injected by JS --></div>
       </div>
 
-      <!-- OVERALL SCORES -->
-      <div class="section-label"><span>Overall scores</span><hr></div>
-      <div class="overall-box">
-        <div class="q-row" id="row-overall1">
-          <div class="q-left"><span class="q-text">Overall satisfaction with the service</span></div>
-          <div class="star-group" data-name="overall1" data-required="true">
-            <input type="radio" name="overall1" id="o1-5" value="5"><label for="o1-5">★</label>
-            <input type="radio" name="overall1" id="o1-4" value="4"><label for="o1-4">★</label>
-            <input type="radio" name="overall1" id="o1-3" value="3"><label for="o1-3">★</label>
-            <input type="radio" name="overall1" id="o1-2" value="2"><label for="o1-2">★</label>
-            <input type="radio" name="overall1" id="o1-1" value="1"><label for="o1-1">★</label>
+      <!-- Recent Feedback -->
+      <div class="bg-white rounded-xl border border-zinc-200 p-5">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-sm font-semibold text-zinc-900">Recent Feedback</h2>
+            <p class="text-xs text-zinc-400 mt-0.5">Latest customer survey responses</p>
           </div>
+          <button class="text-xs text-zinc-500 hover:text-zinc-900 transition-colors font-medium">View all</button>
         </div>
-        <div class="q-row" id="row-overall2">
-          <div class="q-left"><span class="q-text">Likelihood to recommend our service</span></div>
-          <div class="star-group" data-name="overall2" data-required="true">
-            <input type="radio" name="overall2" id="o2-5" value="5"><label for="o2-5">★</label>
-            <input type="radio" name="overall2" id="o2-4" value="4"><label for="o2-4">★</label>
-            <input type="radio" name="overall2" id="o2-3" value="3"><label for="o2-3">★</label>
-            <input type="radio" name="overall2" id="o2-2" value="2"><label for="o2-2">★</label>
-            <input type="radio" name="overall2" id="o2-1" value="1"><label for="o2-1">★</label>
+        <div class="space-y-3">
+          <div class="p-3.5 rounded-lg border border-zinc-100 bg-zinc-50/50">
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="flex items-center gap-2">
+                <img src="https://placehold.co/28x28" class="w-7 h-7 rounded-full object-cover" alt="Customer"/>
+                <span class="text-xs font-semibold text-zinc-800">Michael Torres</span>
+              </div>
+              <div class="flex gap-0.5"><span class="text-amber-400 text-xs">★★★★★</span></div>
+            </div>
+            <p class="text-xs text-zinc-500 leading-relaxed">Excellent service. The agent resolved the issue quickly and professionally.</p>
+            <div class="flex items-center justify-between mt-2">
+              <span class="text-xs text-zinc-400">Agent: Sarah Johnson</span>
+              <span class="text-xs text-zinc-400">2h ago</span>
+            </div>
+          </div>
+          <div class="p-3.5 rounded-lg border border-zinc-100 bg-zinc-50/50">
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="flex items-center gap-2">
+                <img src="https://placehold.co/28x28" class="w-7 h-7 rounded-full object-cover" alt="Customer"/>
+                <span class="text-xs font-semibold text-zinc-800">Amanda Clarke</span>
+              </div>
+              <div class="flex gap-0.5">
+                <span class="text-amber-400 text-xs">★★★★</span>
+                <span class="text-zinc-300 text-xs">★</span>
+              </div>
+            </div>
+            <p class="text-xs text-zinc-500 leading-relaxed">Good support overall. Follow-ups could be faster, but the issue was resolved.</p>
+            <div class="flex items-center justify-between mt-2">
+              <span class="text-xs text-zinc-400">Agent: Mark Evans</span>
+              <span class="text-xs text-zinc-400">5h ago</span>
+            </div>
+          </div>
+          <div class="p-3.5 rounded-lg border border-rose-100 bg-rose-50/30">
+            <div class="flex items-center justify-between mb-1.5">
+              <div class="flex items-center gap-2">
+                <img src="https://placehold.co/28x28" class="w-7 h-7 rounded-full object-cover" alt="Customer"/>
+                <span class="text-xs font-semibold text-zinc-800">Robert Singh</span>
+              </div>
+              <div class="flex gap-0.5">
+                <span class="text-amber-400 text-xs">★★</span>
+                <span class="text-zinc-300 text-xs">★★★</span>
+              </div>
+            </div>
+            <p class="text-xs text-zinc-500 leading-relaxed">Took too long and the issue was not fully resolved. Needs improvement.</p>
+            <div class="flex items-center justify-between mt-2">
+              <span class="text-xs text-zinc-400">Agent: Chris Lee</span>
+              <span class="text-xs text-zinc-400">8h ago</span>
+            </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- YOUR VOICE -->
-      <div class="section-label"><span>Your voice</span><hr></div>
+  </main>
+</div>
 
-      <div class="textarea-wrap">
-        <div class="txt-label">What did we do well? <span class="opt-pill">optional</span></div>
-        <textarea name="did_well" rows="3" placeholder="Share a highlight…"></textarea>
-      </div>
-      <div class="textarea-wrap">
-        <div class="txt-label">What can we improve? <span class="opt-pill">optional</span></div>
-        <textarea name="improve" rows="3" placeholder="Constructive feedback…"></textarea>
-      </div>
+<div id="employeeCsatModal" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 bg-zinc-900/50 backdrop-blur-[2px] employee-csat-modal-backdrop"></div>
 
-      <!-- CONTACT -->
-      <div class="contact-row">
-        <div class="contact-q">May we contact you regarding your feedback?</div>
-        <div class="pill-group">
-          <label class="cpill" id="pill-yes">
-            <input type="radio" name="contact" value="yes" onchange="toggleContact('yes')"> Yes
-          </label>
-          <label class="cpill active" id="pill-no">
-            <input type="radio" name="contact" value="no" checked onchange="toggleContact('no')"> No
-          </label>
-        </div>
-        <div class="contact-fields" id="contactFields">
-          <div class="cf-group">
-            <label>Name</label>
-            <input type="text" name="contact_name" placeholder="Your name">
-          </div>
-          <div class="cf-group">
-            <label>Contact / email</label>
-            <input type="text" name="contact_info" placeholder="Phone or email">
+  <div class="relative z-10 flex min-h-full items-center justify-center p-4">
+    <div class="bg-white w-full max-w-4xl max-h-[88vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+
+      <!-- Modal Header -->
+      <div class="px-6 py-5 border-b border-zinc-100 flex items-start justify-between bg-gradient-to-r from-[#0B1F3A] to-[#122a4d]">
+        <div class="flex items-center gap-3">
+          <img id="ecModalAvatar" src="https://placehold.co/48x48" class="w-12 h-12 rounded-full object-cover ring-2 ring-[#C9A84C]/50" alt="Employee">
+          <div>
+            <h3 id="ecModalName" class="text-base font-bold text-white">Employee Name</h3>
+            <p class="text-xs text-[#C9A84C] font-medium tracking-wide" id="ecModalDept">Department · Employee ID</p>
           </div>
         </div>
-      </div>
-
-      <!-- ERROR -->
-      <div class="err-bar" id="errBar">
-        <i class="ti ti-alert-circle"></i>
-        <span id="errMsg">Please complete all required star ratings before submitting.</span>
-      </div>
-
-      <!-- SUBMIT -->
-      <div class="submit-bar">
-        <p class="privacy-note"><i class="ti ti-shield-check"></i> Confidential — used only for quality improvement</p>
-        <button type="submit" class="submit-btn" id="submitBtn">
-          Submit survey <i class="ti ti-arrow-right"></i>
+        <button type="button" class="employee-csat-modal-close text-white/60 hover:text-white transition-colors p-1">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
         </button>
       </div>
 
-      <div class="success-bar" id="successBar">
-        <div class="success-icon"><i class="ti ti-check"></i></div>
-        Thank you! Your feedback has been recorded successfully.
+      <!-- Modal Stat Strip -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-px bg-zinc-100 border-b border-zinc-100">
+        <div class="bg-white px-4 py-3">
+          <p class="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">Avg Score</p>
+          <p id="ecStatAvg" class="text-lg font-bold text-zinc-900 mt-0.5">4.8 / 5</p>
+        </div>
+        <div class="bg-white px-4 py-3">
+          <p class="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">Responses</p>
+          <p id="ecStatResponses" class="text-lg font-bold text-zinc-900 mt-0.5">126</p>
+        </div>
+        <div class="bg-white px-4 py-3">
+          <p class="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">Satisfaction</p>
+          <p id="ecStatSatisfaction" class="text-lg font-bold text-emerald-600 mt-0.5">93.4%</p>
+        </div>
+        <div class="bg-white px-4 py-3">
+          <p class="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">30-Day Trend</p>
+          <p id="ecStatTrend" class="text-lg font-bold text-emerald-600 mt-0.5 flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+            +0.3
+          </p>
+        </div>
       </div>
 
-    </form>
+      <!-- Modal Body -->
+      <div class="flex-1 overflow-y-auto px-6 py-5">
+
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-[10px] font-bold tracking-[.16em] uppercase text-[#C9A84C]">Response History</span>
+          <hr class="flex-1 border-none h-px bg-gradient-to-r from-[#C9A84C]/40 to-transparent">
+        </div>
+
+        <div id="ecHistoryList" class="space-y-3">
+          <!-- Individual response cards injected by JS -->
+        </div>
+
+        <div id="ecHistoryEmpty" class="hidden text-center py-10">
+          <p class="text-sm text-zinc-400">No survey responses recorded for this employee yet.</p>
+        </div>
+
+        <!-- History pagination -->
+        <div class="flex items-center justify-between mt-4 pt-4 border-t border-zinc-100">
+          <p id="ecHistoryCount" class="text-xs text-zinc-400">Showing 5 of 126 responses</p>
+          <div class="flex items-center gap-1">
+            <button type="button" class="ec-history-prev px-3 py-1.5 text-xs text-zinc-500 border border-zinc-200 rounded-lg hover:bg-zinc-50 transition-colors cursor-pointer">Previous</button>
+            <button type="button" class="ec-history-next px-3 py-1.5 text-xs text-white bg-zinc-900 rounded-lg hover:bg-zinc-800 transition-colors cursor-pointer">Next</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-4 border-t border-zinc-100 flex items-center justify-between bg-zinc-50/60">
+        <p class="text-[11px] text-zinc-400 flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 stroke-emerald-500 fill-none" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          Confidential — visible to authorized administrators only
+        </p>
+        <div class="flex items-center gap-2">
+          <button type="button" class="employee-csat-modal-close px-4 py-2 text-xs font-semibold text-zinc-600 border border-zinc-200 rounded-lg hover:bg-white transition-colors cursor-pointer">Close</button>
+          
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
-
 <script>
-const REQUIRED = ['perf1','perf2','perf3','perf4','perf6','perf7','overall1','overall2'];
+(function () {
+  'use strict';
 
-function updateProgress() {
-  const rated = REQUIRED.filter(n => document.querySelector(`input[name="${n}"]:checked`)).length;
-  document.getElementById('progressFill').style.width = Math.round((rated / REQUIRED.length) * 100) + '%';
-}
+  const MOCK_EMPLOYEES = [
+    { emp_id: 101, name: 'Sarah Johnson', department: 'Support', avg_score: 4.8, responses: 126, satisfaction: 93.4, trend: 0.3, status: 'active', avatar: 'https://placehold.co/40x40' },
+    { emp_id: 102, name: 'Mark Evans',    department: 'Sales',   avg_score: 4.1, responses: 88,  satisfaction: 81.2, trend: -0.1, status: 'active', avatar: 'https://placehold.co/40x40' },
+    { emp_id: 103, name: 'Chris Lee',     department: 'Tech',    avg_score: 3.6, responses: 54,  satisfaction: 68.9, trend: -0.4, status: 'watch',  avatar: 'https://placehold.co/40x40' },
+  ];
 
-document.querySelectorAll('.star-group input').forEach(function(inp) {
-  inp.addEventListener('change', function() {
-    const row = document.getElementById('row-' + this.name);
-    if (row) row.querySelector('.star-group').classList.remove('rating-error');
-    hideErr();
-    updateProgress();
-  });
-});
+  const MOCK_HISTORY = {
+    101: [
+      { date: '2026-01-18', client: 'Touchstar Client A', o1: 5, o2: 5, did_well: 'Fast response and resolved calibration issue same day.', improve: '' },
+      { date: '2026-01-12', client: 'Touchstar Client B', o1: 5, o2: 4, did_well: 'Very professional on-site visit.', improve: 'Could send confirmation email sooner.' },
+      { date: '2026-01-05', client: 'Touchstar Client C', o1: 4, o2: 5, did_well: 'Clear explanation of the service report.', improve: '' },
+    ],
+    102: [
+      { date: '2026-01-15', client: 'Touchstar Client D', o1: 4, o2: 4, did_well: 'Good follow-through.', improve: 'Response time could be quicker.' },
+    ],
+    103: [
+      { date: '2026-01-10', client: 'Touchstar Client E', o1: 3, o2: 3, did_well: '', improve: 'Ticket took longer than expected to close.' },
+    ],
+  };
+  // Monthly average CSAT score, current year vs previous year (1-5 scale)
+  const MOCK_MONTHLY_TREND = [
+    { label: 'Jan', y2026: 4.6, y2025: 4.2 },
+    { label: 'Feb', y2026: 4.5, y2025: 4.1 },
+    { label: 'Mar', y2026: 4.7, y2025: 4.3 },
+    { label: 'Apr', y2026: 4.4, y2025: 4.0 },
+    { label: 'May', y2026: 4.6, y2025: 4.2 },
+    { label: 'Jun', y2026: 4.8, y2025: 4.4 },
+    { label: 'Jul', y2026: 4.5, y2025: 4.1 },
+    { label: 'Aug', y2026: 4.3, y2025: 4.0 },
+    { label: 'Sep', y2026: 4.6, y2025: 4.3 },
+    { label: 'Oct', y2026: 4.7, y2025: 4.2 },
+    { label: 'Nov', y2026: 4.5, y2025: 4.1 },
+    { label: 'Dec', y2026: 4.6, y2025: 4.4 },
+  ];
 
-function toggleContact(val) {
-  const yes = document.getElementById('pill-yes');
-  const no  = document.getElementById('pill-no');
-  const fields = document.getElementById('contactFields');
-  if (val === 'yes') {
-    yes.classList.add('active');
-    no.classList.remove('active');
-    fields.classList.add('show');
-  } else {
-    no.classList.add('active');
-    yes.classList.remove('active');
-    fields.classList.remove('show');
-  }
-}
+  const HISTORY_PAGE_SIZE = 5;
+  let activeEmployeeId = null;
+  let historyPage = 1;
 
-function showErr(msg) {
-  const b = document.getElementById('errBar');
-  document.getElementById('errMsg').textContent = msg;
-  b.classList.add('show');
-}
+  const modal = document.getElementById('employeeCsatModal');
+  const tableBody = document.querySelector('.employee-table-body');
+  const countLabel = document.querySelector('.employee-count-label');
+  const barChartEl = document.querySelector('.csat-bar-chart');
+  const barLabelsEl = document.querySelector('.csat-bar-labels');
+  const topPerformersEl = document.querySelector('.top-performers-list');
 
-function hideErr() {
-  document.getElementById('errBar').classList.remove('show');
-}
-
-document.getElementById('csatForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  const missing = REQUIRED.filter(n => !document.querySelector(`input[name="${n}"]:checked`));
-
-  if (missing.length) {
-    missing.forEach(function(n) {
-      const row = document.getElementById('row-' + n);
-      if (row) row.querySelector('.star-group').classList.add('rating-error');
-    });
-    showErr('Please rate all ' + missing.length + ' required field' + (missing.length > 1 ? 's' : '') + ' before submitting.');
-    const firstMissing = document.getElementById('row-' + missing[0]);
-    if (firstMissing) firstMissing.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    return;
-  }
-
-  hideErr();
-
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i> Submitting…';
-
-  /* ── Replace the setTimeout below with your actual fetch() call ── */
-  setTimeout(function() {
-    btn.style.display = 'none';
-    document.getElementById('successBar').classList.add('show');
-    document.getElementById('progressFill').style.width = '100%';
-  }, 1200);
-
-  /*
-  LARAVEL BACKEND WIRING (drop in to replace the setTimeout above):
-
-  const SUBMIT_URL = '/client/csat/{serviceRecord}';
-  const CSRF = document.querySelector('meta[name="csrf-token"]')?.content ?? '';
-
-  fetch(SUBMIT_URL, {
-    method: 'POST',
-    headers: { 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' },
-    body: new FormData(this),
-  })
-  .then(res => res.json().then(data => ({ ok: res.ok, data })))
-  .then(({ ok, data }) => {
-    if (ok) {
-      btn.style.display = 'none';
-      document.getElementById('successBar').classList.add('show');
-      document.getElementById('progressFill').style.width = '100%';
-      setTimeout(() => { window.location.href = '/client/landing'; }, 2500);
-    } else {
-      showErr(data.message ?? 'Something went wrong. Please try again.');
-      btn.disabled = false;
-      btn.innerHTML = 'Submit survey <i class="ti ti-arrow-right"></i>';
+  function starsHtml(score) {
+    let html = '<span class="ec-stars-readonly">';
+    for (let i = 1; i <= 5; i++) {
+      html += '<span class="ec-star' + (i <= Math.round(score) ? ' filled' : '') + '">★</span>';
     }
-  })
-  .catch(() => {
-    showErr('Network error. Please check your connection and try again.');
-    btn.disabled = false;
-    btn.innerHTML = 'Submit survey <i class="ti ti-arrow-right"></i>';
-  });
-  */
-});
+    return html + '</span>';
+  }
 
-function handleClose() {
-  window.history.back();
-}
+  function statusBadge(status) {
+    const map = {
+      active: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+      watch: 'bg-amber-50 text-amber-700 border-amber-200',
+      inactive: 'bg-zinc-50 text-zinc-500 border-zinc-200',
+    };
+    const label = { active: 'Active', watch: 'Needs Attention', inactive: 'Inactive' }[status] || 'Active';
+    const cls = map[status] || map.active;
+    return '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border ' + cls + '">' + label + '</span>';
+  }
+
+  function renderEmployeeTable(employees) {
+    if (!tableBody) return;
+    tableBody.innerHTML = employees.map(function (e) {
+      const trendUp = e.trend >= 0;
+      const trendColor = trendUp ? 'text-emerald-600' : 'text-red-500';
+      const trendIcon = trendUp
+        ? '<path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>'
+        : '<path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>';
+      return (
+        '<tr class="border-b border-zinc-50 last:border-0 hover:bg-zinc-50/60 transition-colors">' +
+          '<td class="px-5 py-3">' +
+            '<div class="flex items-center gap-2.5">' +
+              '<img src="' + e.avatar + '" class="w-8 h-8 rounded-full object-cover" alt="' + e.name + '">' +
+              '<span class="font-medium text-zinc-800">' + e.name + '</span>' +
+            '</div>' +
+          '</td>' +
+          '<td class="px-5 py-3 hidden sm:table-cell text-zinc-500">' + e.department + '</td>' +
+          '<td class="px-5 py-3">' +
+            '<div class="flex items-center gap-2">' + starsHtml(e.avg_score) + '<span class="text-zinc-700 font-semibold text-xs">' + e.avg_score.toFixed(1) + '</span></div>' +
+          '</td>' +
+          '<td class="px-5 py-3 hidden md:table-cell text-zinc-500">' + e.responses + '</td>' +
+          '<td class="px-5 py-3 hidden lg:table-cell text-zinc-700 font-medium">' + e.satisfaction.toFixed(1) + '%</td>' +
+          '<td class="px-5 py-3 hidden lg:table-cell">' +
+            '<span class="inline-flex items-center gap-1 text-xs font-semibold ' + trendColor + '">' +
+              '<svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">' + trendIcon + '</svg>' +
+              (trendUp ? '+' : '') + e.trend.toFixed(1) +
+            '</span>' +
+          '</td>' +
+          '<td class="px-5 py-3">' + statusBadge(e.status) + '</td>' +
+          '<td class="px-5 py-3 text-right">' +
+            '<button type="button" class="ec-view-btn text-xs font-semibold text-[#0B1F3A] hover:text-[#C9A84C] transition-colors cursor-pointer" data-emp-id="' + e.emp_id + '">View</button>' +
+          '</td>' +
+        '</tr>'
+      );
+    }).join('');
+
+    if (countLabel) {
+      countLabel.textContent = 'Showing ' + employees.length + ' of ' + employees.length + ' employees';
+    }
+
+    tableBody.querySelectorAll('.ec-view-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        openEmployeeCsatModal(parseInt(btn.dataset.empId, 10));
+      });
+    });
+  }
+
+  function renderMonthlyBarChart(months) {
+    if (!barChartEl || !barLabelsEl) return;
+    const maxScore = 5;
+
+    barChartEl.innerHTML = months.map(function (m) {
+      const h26 = Math.max(4, Math.round((m.y2026 / maxScore) * 100));
+      const h25 = Math.max(4, Math.round((m.y2025 / maxScore) * 100));
+      return (
+        '<div class="csat-bar-col">' +
+          '<div class="csat-bar-pair" title="' + m.label + ' 2026: ' + m.y2026.toFixed(1) + ' \u00b7 2025: ' + m.y2025.toFixed(1) + '">' +
+            '<div class="csat-bar csat-bar-2026" style="height:' + h26 + '%"></div>' +
+            '<div class="csat-bar csat-bar-2025" style="height:' + h25 + '%"></div>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+
+    barLabelsEl.innerHTML = months.map(function (m) {
+      return '<span>' + m.label + '</span>';
+    }).join('');
+  }
+
+  function renderTopPerformers(employees) {
+    if (!topPerformersEl) return;
+    const ranked = employees.slice().sort(function (a, b) { return b.avg_score - a.avg_score; }).slice(0, 5);
+    const rankColors = ['bg-amber-100 text-amber-700', 'bg-zinc-100 text-zinc-600', 'bg-orange-100 text-orange-700'];
+
+    topPerformersEl.innerHTML = ranked.map(function (e, i) {
+      const rankCls = rankColors[i] || 'bg-zinc-50 text-zinc-400';
+      return (
+        '<div class="top-performer-row">' +
+          '<div class="flex items-center gap-3">' +
+            '<span class="top-performer-rank ' + rankCls + '">' + (i + 1) + '</span>' +
+            '<img src="' + e.avatar + '" class="w-8 h-8 rounded-full object-cover" alt="' + e.name + '">' +
+            '<div>' +
+              '<p class="text-xs font-semibold text-zinc-800">' + e.name + '</p>' +
+              '<p class="text-[11px] text-zinc-400">' + e.department + '</p>' +
+            '</div>' +
+          '</div>' +
+          '<div class="flex items-center gap-2">' + starsHtml(e.avg_score) + '<span class="text-xs font-bold text-zinc-900">' + e.avg_score.toFixed(1) + '</span></div>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  function renderHistoryPage() {
+    const all = MOCK_HISTORY[activeEmployeeId] || [];
+    const start = (historyPage - 1) * HISTORY_PAGE_SIZE;
+    const pageItems = all.slice(start, start + HISTORY_PAGE_SIZE);
+
+    const listEl = document.getElementById('ecHistoryList');
+    const emptyEl = document.getElementById('ecHistoryEmpty');
+    const countEl = document.getElementById('ecHistoryCount');
+
+    if (!all.length) {
+      listEl.innerHTML = '';
+      emptyEl.classList.remove('hidden');
+    } else {
+      emptyEl.classList.add('hidden');
+      listEl.innerHTML = pageItems.map(function (r) {
+        return (
+          '<div class="rounded-xl border border-zinc-100 bg-zinc-50/50 px-4 py-3.5">' +
+            '<div class="flex items-center justify-between flex-wrap gap-2 mb-2">' +
+              '<span class="text-xs font-semibold text-zinc-700">' + r.client + '</span>' +
+              '<span class="text-[11px] text-zinc-400">' + r.date + '</span>' +
+            '</div>' +
+            '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">' +
+              '<div class="flex items-center justify-between bg-white border border-zinc-100 rounded-lg px-3 py-2">' +
+                '<span class="text-[11px] text-zinc-500">Overall satisfaction</span>' + starsHtml(r.o1) +
+              '</div>' +
+              '<div class="flex items-center justify-between bg-white border border-zinc-100 rounded-lg px-3 py-2">' +
+                '<span class="text-[11px] text-zinc-500">Likelihood to recommend</span>' + starsHtml(r.o2) +
+              '</div>' +
+            '</div>' +
+            (r.did_well ? '<p class="text-xs text-zinc-600"><span class="font-semibold text-zinc-500">What did we do well: </span>' + r.did_well + '</p>' : '') +
+            (r.improve ? '<p class="text-xs text-zinc-600 mt-1"><span class="font-semibold text-zinc-500">What Can we Improve: </span>' + r.improve + '</p>' : '')  +
+          '</div>'
+        );
+      }).join('');
+    }
+
+    countEl.textContent = 'Showing ' + pageItems.length + ' of ' + all.length + ' responses';
+    document.querySelector('.ec-history-prev').disabled = historyPage <= 1;
+    document.querySelector('.ec-history-next').disabled = start + HISTORY_PAGE_SIZE >= all.length;
+  }
+
+  function openEmployeeCsatModal(empId) {
+    const employee = MOCK_EMPLOYEES.find(function (e) { return e.emp_id === empId; });
+    if (!employee) return;
+
+    activeEmployeeId = empId;
+    historyPage = 1;
+
+    document.getElementById('ecModalAvatar').src = employee.avatar;
+    document.getElementById('ecModalName').textContent = employee.name;
+    document.getElementById('ecModalDept').textContent = employee.department + ' \u00b7 EMP-' + employee.emp_id;
+    document.getElementById('ecStatAvg').textContent = employee.avg_score.toFixed(1) + ' / 5';
+    document.getElementById('ecStatResponses').textContent = employee.responses;
+    document.getElementById('ecStatSatisfaction').textContent = employee.satisfaction.toFixed(1) + '%';
+    document.getElementById('ecStatTrend').innerHTML =
+      '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">' +
+      (employee.trend >= 0
+        ? '<path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>'
+        : '<path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>') +
+      '</svg>' + (employee.trend >= 0 ? '+' : '') + employee.trend.toFixed(1);
+    document.getElementById('ecStatTrend').className = 'text-lg font-bold mt-0.5 flex items-center gap-1 ' + (employee.trend >= 0 ? 'text-emerald-600' : 'text-red-500');
+
+    renderHistoryPage();
+
+    modal.classList.remove('hidden');
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeEmployeeCsatModal() {
+    modal.classList.add('hidden');
+    modal.classList.remove('is-open');
+    document.body.style.overflow = '';
+    activeEmployeeId = null;
+  }
+
+  document.querySelectorAll('.employee-csat-modal-close, .employee-csat-modal-backdrop').forEach(function (el) {
+    el.addEventListener('click', closeEmployeeCsatModal);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+      closeEmployeeCsatModal();
+    }
+  });
+
+  document.querySelector('.ec-history-prev').addEventListener('click', function () {
+    if (historyPage > 1) { historyPage--; renderHistoryPage(); }
+  });
+  document.querySelector('.ec-history-next').addEventListener('click', function () {
+    const all = MOCK_HISTORY[activeEmployeeId] || [];
+    if (historyPage * HISTORY_PAGE_SIZE < all.length) { historyPage++; renderHistoryPage(); }
+  });
+
+  // document.getElementById('ecExportBtn').addEventListener('click', function () {
+  //   // Wire this to a real export route, e.g.:
+  //   // window.location.href = '/admin/csat/employees/' + activeEmployeeId + '/export';
+  //   alert('Export report for employee #' + activeEmployeeId + ' (wire this button to your export route).');
+  // });
+
+  // Expose for external row-render scripts if you already have your own AJAX loader
+  window.openEmployeeCsatModal = openEmployeeCsatModal;
+  window.renderEmployeeTable = renderEmployeeTable;
+  window.renderMonthlyBarChart = renderMonthlyBarChart;
+  window.renderTopPerformers = renderTopPerformers;
+
+  // Initial render (replace these three with real fetch() calls to your Laravel endpoints)
+  renderEmployeeTable(MOCK_EMPLOYEES);
+  renderMonthlyBarChart(MOCK_MONTHLY_TREND);
+  renderTopPerformers(MOCK_EMPLOYEES);
+})();
 </script>
-</body>
-</html>
+@endsection

@@ -246,3 +246,9 @@ Route::get("/survey/pending",function(Request $req){
 
     return response()->json(["pending"=>$pendingList,"questionaire"=>["rating"=>$questionaireRating,"input"=>$questionaireInput]]);
 })->middleware([isAuthClient::class]);
+
+
+Route::get('satisfaction-survey', function(){
+    $employee_details = touchStarEmp::where('emp_id', Auth::guard('touchstaraccount')->user()->emp_id)->first();
+    return view('survey.admin.index', compact('employee_details'));
+});
