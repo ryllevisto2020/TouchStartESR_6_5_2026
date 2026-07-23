@@ -193,12 +193,91 @@ Route::get("clients/machines/{id}",function(Request $req){
     return "test";
 });
 
-Route::get('client/service-history', function(){
-    $client_detail = touchstarClient::where("client_id",Auth::guard("touchstaraclientccount")->user()->client_id)->first();
-    $client_service_record = ServiceReport::where('client_id',$client_detail->client_id)->get()->all();
-    $machines = Machine::all();
-    return view('clients.history',compact("client_detail","client_service_record","machines"));
-})->name('client.service.history')->middleware([isAuthClient::class]);
+// Route::get('client/service-history', function(){
+//     $client_detail = touchstarClient::where("client_id",Auth::guard("touchstaraclientccount")->user()->client_id)->first();
+//     $client_service_record = ServiceReport::where('client_id',$client_detail->client_id)->get()->all();
+//     $machines = Machine::all();
+//     return view('clients.history',compact("client_detail","client_service_record","machines"));
+// })->name('client.service.history')->middleware([isAuthClient::class]);
+
+    Route::get('client/service-history', function (\Illuminate\Http\Request $request) {
+    
+        $client_detail = touchstarClient::where('client_id', Auth::guard('touchstaraclientccount')->user()->client_id)->first();
+    
+        // Base scope: everything belonging to this client
+        $baseQuery = fn () => ServiceReport::where('client_id', $client_detail->client_id);
+    
+        $filtered = $baseQuery();
+    
+        if ($request->filled('machine_id')) {
+            $filtered->where('machine_id', $request->input('machine_id'));
+        }
+    
+        if ($request->filled('service_type') && $request->input('service_type') !== 'all') {
+            $filtered->where('service_type', $request->input('service_type'));
+        }
+    
+        if ($request->filled('service_engineer') && $request->input('service_engineer') !== 'all') {
+            $filtered->where('service_engineer', $request->input('service_engineer'));
+        }
+    
+        if ($request->filled('equipment_status') && $request->input('equipment_status') !== 'all') {
+            $filtered->where('equipment_status', $request->input('equipment_status'));
+        }
+    
+        if ($request->filled('date_from')) {
+            $filtered->whereDate('service_date', '>=', $request->input('date_from'));
+        }
+    
+        if ($request->filled('date_to')) {
+            $filtered->whereDate('service_date', '<=', $request->input('date_to'));
+        }
+    
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $filtered->where(function ($q) use ($search) {
+                $q->where('root_cause_findings', 'like', "%{$search}%")
+                ->orWhere('action_taken', 'like', "%{$search}%")
+                ->orWhere('recommendations', 'like', "%{$search}%")
+                ->orWhere('identification_verification', 'like', "%{$search}%");
+            });
+        }
+    
+        $client_service_record = $filtered
+            ->orderByDesc('service_date')
+            ->paginate(10)
+            ->withQueryString();
+    
+        // Machines actually referenced in this client's service history (for the dropdown)
+        $machineIds = $baseQuery()->pluck('machine_id')->unique();
+        $machines = Machine::whereIn('id', $machineIds)->get();
+    
+        // Distinct engineers who've serviced this client's equipment
+        $engineers = $baseQuery()
+            ->whereNotNull('service_engineer')
+            ->distinct()
+            ->pluck('service_engineer');
+    
+        $serviceTypes = ['Preventive Maintenance', 'Troubleshooting', 'Installation', 'Warranty', 'Calibration'];
+    
+        $stats = [
+            'total'      => $baseQuery()->count(),
+            'this_month' => $baseQuery()
+                ->whereMonth('service_date', now()->month)
+                ->whereYear('service_date', now()->year)
+                ->count(),
+            'engineers'  => $engineers->count(),
+        ];
+    
+        return view('clients.history', compact(
+            'client_detail',
+            'client_service_record',
+            'machines',
+            'engineers',
+            'serviceTypes',
+            'stats'
+        ));
+    })->name('client.service.history')->middleware([isAuthClient::class]);
 
 Route::get('clients/batch', function(){
     return view('clients.batch');
