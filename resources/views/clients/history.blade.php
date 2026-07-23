@@ -3,34 +3,15 @@
 @section('content')
 
 <script>
-// const RECORDS = [
-//   { id:1, machine:"Mindray MX-900", model:"MX-900", serial:"SN-20241101-001", type:"Preventive Maintenance", engineer:"Ramon dela Cruz", status:"Operational", date:"May 08, 2025", time:"9:30 AM", problem:"Unit displaying intermittent low battery warnings despite AC power. Screen brightness degraded during extended use.", root:"Defective battery management IC causing false drain readings. Display backlight driver PCB showing early signs of capacitor aging.", actions:"Replaced battery management module. Recalibrated power sensing circuit. Cleaned and reseated display ribbon cable. Conducted 2-hour burn-in test — unit passed all checks.", recommendations:"Schedule next PMS in 3 months. Install surge protector on outlet.", id_verification:"Unit serial number verified against service log. All patient contact surfaces cleaned per hospital protocol.", parts:[{qty:1,item:"Battery Management IC",si:"SI-2025-001"},{qty:2,item:"Backlight Capacitor 100µF",si:"SI-2025-002"}], before:2, after:2 },
-//   { id:2, machine:"Draeger Evita XL", model:"Evita XL", serial:"SN-20241101-002", type:"Troubleshooting", engineer:"Maria Santos", status:"Not Operational", date:"May 06, 2025", time:"2:15 PM", problem:"Ventilator alarming on high pressure limit. Patient circuit pressure readings inconsistent with set parameters.", root:"Partially blocked expiratory valve due to secretion buildup. Flow sensor calibration drift detected after 14 months.", actions:"Disassembled and cleaned expiratory valve assembly. Replaced flow sensor. Performed full ventilator calibration and leak test. Unit requires follow-up within 7 days.", recommendations:"Follow-up visit required within 7 days. Recommend daily expiratory valve inspection by nursing staff.", id_verification:"Unit tagged Out of Service pending part arrival. Serial verified against hospital equipment register.", parts:[{qty:1,item:"Flow Sensor Assembly",si:"SI-2025-010"},{qty:1,item:"Expiratory Valve Seal Kit",si:"SI-2025-011"}], before:3, after:0 },
-//   { id:3, machine:"Nihon Kohden BSM-6000", model:"BSM-6000", serial:"SN-20230615-008", type:"Calibration", engineer:"Joel Reyes", status:"Operational", date:"May 05, 2025", time:"10:00 AM", problem:"Routine annual calibration due. SpO2 readings slightly off from reference by ±2%.", root:"SpO2 sensor drift after 18 months of continuous use.", actions:"Performed full multi-parameter calibration per manufacturer protocol. Adjusted SpO2, NIBP, and temperature offsets. Verified ECG lead performance. All parameters within spec.", recommendations:"Next calibration due May 2026.", id_verification:"Calibration reference equipment certificates verified and on file. Unit calibration stickers updated.", parts:[], before:1, after:1 },
-//   { id:4, machine:"GE Logiq E10", model:"Logiq E10", serial:"SN-20220310-014", type:"Installation", engineer:"Ana Flores", status:"Operational", date:"Apr 29, 2025", time:"11:45 AM", problem:"New unit installation at Radiology Department, Room 3.", root:"N/A — New unit installation.", actions:"Unboxed and inspected unit. Installed at designated workstation. Configured DICOM network settings. Performed image quality verification and handed over to department head with user orientation.", recommendations:"User training follow-up in 2 weeks for remaining staff.", id_verification:"System installation complete. All probes calibrated against phantom. PACS connectivity tested with IT.", parts:[], before:5, after:3 },
-//   { id:5, machine:"Philips IntelliVue MP70", model:"MP70", serial:"SN-20210820-003", type:"Warranty", engineer:"Carlos Tan", status:"Operational", date:"Apr 24, 2025", time:"8:00 AM", problem:"Touch screen unresponsive in the lower-right quadrant.", root:"Digitizer film delamination — covered under active manufacturer warranty.", actions:"Filed warranty claim with Philips. Replaced touchscreen digitizer assembly under warranty. Performed full functional test post-replacement. No charges to client.", recommendations:"Monitor for recurrence over next 30 days.", id_verification:"Warranty status confirmed with Philips distributor. Serial number registered in warranty system.", parts:[{qty:1,item:"Touchscreen Digitizer Assembly",si:"WR-2025-041"}], before:1, after:1 },
-//   { id:6, machine:"Hamilton C6 Ventilator", model:"C6", serial:"SN-20230101-011", type:"Troubleshooting", engineer:"Ramon dela Cruz", status:"Not Operational", date:"Apr 20, 2025", time:"3:30 PM", problem:"Unit throwing E-045 hardware fault. Cannot enter operational mode.", root:"Main control board failure. Component-level fault in the power regulation subsystem confirmed via diagnostic port.", actions:"Isolated fault to main PCB. Replacement board ordered from distributor — ETA 5 business days. Unit tagged Out of Service pending repair.", recommendations:"Do not use unit until replacement board is installed and verified.", id_verification:"Fault code E-045 logged. Unit quarantined and tagged per hospital HTMO protocol.", parts:[{qty:1,item:"Main Control PCB (Hamilton C6)",si:"PO-2025-088"}], before:2, after:0 },
-//   { id:7, machine:"Sysmex XN-3000", model:"XN-3000", serial:"SN-20191205-021", type:"Preventive Maintenance", engineer:"Joel Reyes", status:"Operational", date:"Apr 17, 2025", time:"1:00 PM", problem:"Scheduled quarterly preventive maintenance service.", root:"No issues found — routine maintenance only.", actions:"Cleaned sample probe and flow cell. Replaced sheath fluid filter. Ran QC materials and verified CBC+Diff accuracy. All parameters within acceptable range.", recommendations:"Next PMS scheduled for July 2025.", id_verification:"QC materials lot numbers recorded in service log. Maintenance sticker updated.", parts:[{qty:1,item:"Sheath Fluid Filter",si:"SI-2025-055"},{qty:1,item:"Sample Probe Cleaning Kit",si:"SI-2025-056"}], before:1, after:1 },
-//   { id:8, machine:"Spacelabs 91370", model:"91370", serial:"SN-20200718-006", type:"Calibration", engineer:"Maria Santos", status:"Operational", date:"Apr 10, 2025", time:"10:30 AM", problem:"Annual calibration required per hospital protocol.", root:"Battery backup holding less than 60% capacity. No calibration drift detected.", actions:"Performed NIBP calibration against mercury reference. Verified alarm thresholds and SpO2 accuracy. Replaced backup battery.", recommendations:"Next calibration due April 2026.", id_verification:"Reference sphygmomanometer calibration certificate on file. Battery replaced and tested.", parts:[{qty:1,item:"Backup Battery Pack 12V 4Ah",si:"SI-2025-060"}], before:0, after:0 },
-//   { id:9, machine:"Mindray DC-70", model:"DC-70", serial:"SN-20240205-019", type:"Installation", engineer:"Ana Flores", status:"Operational", date:"Apr 03, 2025", time:"9:00 AM", problem:"New ultrasound unit installation at OB-GYN Department.", root:"N/A — New installation.", actions:"Completed site inspection and equipment positioning. Installed transducers, configured OB/GYN presets. Connected to hospital PACS via DICOM. User training conducted for 4 staff members.", recommendations:"Follow-up training session in 2 weeks for remaining 3 staff.", id_verification:"PACS connectivity tested with IT department. DICOM tags verified. All probes calibrated.", parts:[], before:7, after:2 },
-//   { id:10, machine:"Siemens ACUSON SC2000", model:"SC2000", serial:"SN-20180430-033", type:"Troubleshooting", engineer:"Carlos Tan", status:"Not Operational", date:"Mar 28, 2025", time:"4:00 PM", problem:"System not booting. Stuck on POST screen with error code 0xA3.", root:"HDD failure confirmed. Boot sector corrupted from brownout event.", actions:"Cloned original HDD to new SSD using disk imaging tool. System boots successfully. Full imaging function scan performed and passed.", recommendations:"Install a UPS for this workstation immediately to prevent recurrence.", id_verification:"System boot log reviewed. Error code 0xA3 confirmed as HDD fault via hardware diagnostic.", parts:[{qty:1,item:"256GB SSD (replacement HDD)",si:"SI-2025-071"},{qty:1,item:"SATA Data Cable",si:"SI-2025-072"}], before:2, after:1 }
-// ];
-
-console.log({{ Js::from($client_service_record) }})
+console.log({{ Js::from($client_service_record->items()) }})
 
 const machines = {{ Js::from($machines) }}
-const RECORDS = {{ Js::from($client_service_record) }}
+const RECORDS = {{ Js::from($client_service_record->items()) }}
 
 function typeIcon(t){ return {Troubleshooting:"fa-wrench",Installation:"fa-screwdriver-wrench",Warranty:"fa-file-contract",Calibration:"fa-ruler-combined","Preventive Maintenance":"fa-shield-check"}[t]||"fa-tools"; }
 function typeBadge(t){ return {Troubleshooting:"bg-orange-100 text-orange-800",Installation:"bg-purple-100 text-purple-800",Warranty:"bg-teal-100 text-teal-800",Calibration:"bg-indigo-100 text-indigo-800","Preventive Maintenance":"bg-blue-100 text-blue-800"}[t]||"bg-gray-100 text-gray-700"; }
 function mIcon(n){ if(/ventilator|evita|hamilton/i.test(n)) return "fa-lungs"; if(/mri|ct|logiq|acuson|dc-70|ultrasound/i.test(n)) return "fa-radiation"; if(/sysmex|hema/i.test(n)) return "fa-microscope"; return "fa-heartbeat"; }
 function mColor(n){ if(/ventilator|evita|hamilton/i.test(n)) return "bg-violet-50 text-violet-400 border-violet-100"; if(/mri|ct|logiq|acuson|dc-70/i.test(n)) return "bg-amber-50 text-amber-500 border-amber-100"; if(/sysmex|hema/i.test(n)) return "bg-emerald-50 text-emerald-500 border-emerald-100"; return "bg-blue-50 text-blue-400 border-blue-100"; }
-
-function svgDataUrl(label, w, h, bg){
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'><rect width='${w}' height='${h}' fill='${bg}' rx='4'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='${w>100?18:10}' fill='#6B7280' font-family='sans-serif'>${label}</text></svg>`;
-  return 'data:image/svg+xml;base64,' + btoa(svg);
-}
-const COLORS = ["#DBEAFE","#D1FAE5","#FEF3C7","#EDE9FE","#FCE7F3","#E0F2FE","#FEE2E2","#ECFDF5"];
 </script>
 
 <div class="no-print">
@@ -50,20 +31,21 @@ const COLORS = ["#DBEAFE","#D1FAE5","#FEF3C7","#EDE9FE","#FCE7F3","#E0F2FE","#FE
     <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
       <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-blue-500 flex items-center gap-4">
         <div class="p-2.5 rounded-xl bg-blue-50 text-blue-600 text-lg"><i class="fas fa-clipboard-list"></i></div>
-        <div><p class="text-xs text-gray-500 font-medium">Total Services</p><p class="text-2xl font-bold text-gray-900">148</p></div>
+        <div><p class="text-xs text-gray-500 font-medium">Total Services</p><p class="text-2xl font-bold text-gray-900">{{ $stats['total'] }}</p></div>
       </div>
       <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-green-500 flex items-center gap-4">
         <div class="p-2.5 rounded-xl bg-green-50 text-green-600 text-lg"><i class="fas fa-calendar-check"></i></div>
-        <div><p class="text-xs text-gray-500 font-medium">This Month</p><p class="text-2xl font-bold text-gray-900">12</p></div>
+        <div><p class="text-xs text-gray-500 font-medium">This Month</p><p class="text-2xl font-bold text-gray-900">{{ $stats['this_month'] }}</p></div>
       </div>
       <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-purple-500 flex items-center gap-4">
         <div class="p-2.5 rounded-xl bg-purple-50 text-purple-600 text-lg"><i class="fas fa-user-cog"></i></div>
-        <div><p class="text-xs text-gray-500 font-medium">Engineers</p><p class="text-2xl font-bold text-gray-900">6</p></div>
+        <div><p class="text-xs text-gray-500 font-medium">Engineers</p><p class="text-2xl font-bold text-gray-900">{{ $stats['engineers'] }}</p></div>
       </div>
-      
+
     </div>
 
     <!-- Filters -->
+    <form method="GET" action="{{ route('client.service.history') }}">
     <div class="bg-white rounded-xl shadow-sm mb-8">
       <div class="px-6 py-4 border-b border-gray-100 flex items-center gap-2">
         <i class="fas fa-sliders text-gray-400 text-sm"></i>
@@ -71,38 +53,76 @@ const COLORS = ["#DBEAFE","#D1FAE5","#FEF3C7","#EDE9FE","#FCE7F3","#E0F2FE","#FE
       </div>
       <div class="p-5">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div><label class="block text-xs font-semibold text-gray-500 mb-1.5">Serial Number</label>
-            <select><option>All Serial Numbers</option><option>SN-20241101-001</option><option>SN-20241101-002</option><option>SN-20230615-008</option></select></div>
-          <div><label class="block text-xs font-semibold text-gray-500 mb-1.5">Service Type</label>
-            <select><option>All Types</option><option>Preventive Maintenance</option><option>Troubleshooting</option><option>Installation</option><option>Warranty</option><option>Calibration</option></select></div>
-          <div><label class="block text-xs font-semibold text-gray-500 mb-1.5">Service Engineer</label>
-            <select><option>All Engineers</option><option>Ramon dela Cruz</option><option>Maria Santos</option><option>Joel Reyes</option><option>Ana Flores</option><option>Carlos Tan</option></select></div>
-          <div><label class="block text-xs font-semibold text-gray-500 mb-1.5">Equipment Status</label>
-            <select><option>All Status</option><option>Operational</option><option>Not Operational</option></select></div>
-          <div><label class="block text-xs font-semibold text-gray-500 mb-1.5">From Date</label><input type="date" value="2025-01-01"></div>
-          <div><label class="block text-xs font-semibold text-gray-500 mb-1.5">To Date</label><input type="date" value="2025-05-10"></div>
-          <div class="lg:col-span-2"><label class="block text-xs font-semibold text-gray-500 mb-1.5">Search Problem Description</label>
-            <input type="text" placeholder="Search in issues, root cause, actions taken…"></div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1.5">Machine / Serial Number</label>
+            <select name="machine_id">
+              <option value="">All Serial Numbers</option>
+              @foreach ($machines as $m)
+                <option value="{{ $m->id }}" @selected(request('machine_id') == $m->id)>{{ $m->serial_number }} — {{ $m->name }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1.5">Service Type</label>
+            <select name="service_type">
+              <option value="all">All Types</option>
+              @foreach ($serviceTypes as $type)
+                <option value="{{ $type }}" @selected(request('service_type') == $type)>{{ $type }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1.5">Service Engineer</label>
+            <select name="service_engineer">
+              <option value="all">All Engineers</option>
+              @foreach ($engineers as $eng)
+                <option value="{{ $eng }}" @selected(request('service_engineer') == $eng)>{{ $eng }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1.5">Equipment Status</label>
+            <select name="equipment_status">
+              <option value="all">All Status</option>
+              <option value="Operational" @selected(request('equipment_status') == 'Operational')>Operational</option>
+              <option value="Not Operational" @selected(request('equipment_status') == 'Not Operational')>Not Operational</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1.5">From Date</label>
+            <input type="date" name="date_from" value="{{ request('date_from') }}">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1.5">To Date</label>
+            <input type="date" name="date_to" value="{{ request('date_to') }}">
+          </div>
+          <div class="lg:col-span-2">
+            <label class="block text-xs font-semibold text-gray-500 mb-1.5">Search Problem Description</label>
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search in root cause, actions taken, recommendations…">
+          </div>
         </div>
         <div class="flex justify-between items-center mt-5 pt-4 border-t border-gray-100">
-          <span class="text-xs text-gray-400">Showing 1–10 of 148 results</span>
+          <span class="text-xs text-gray-400">
+            Showing {{ $client_service_record->firstItem() ?? 0 }}–{{ $client_service_record->lastItem() ?? 0 }} of {{ $client_service_record->total() }} results
+          </span>
           <div class="flex gap-2">
-            <button class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-xs gap-1.5 font-medium transition-colors">
+            <a href="{{ route('client.service.history') }}" class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-xs gap-1.5 font-medium transition-colors">
               <i class="fas fa-rotate-left"></i> Reset
-            </button>
-            <button class="inline-flex items-center px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs gap-1.5 font-medium transition-colors">
+            </a>
+            <button type="submit" class="inline-flex items-center px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs gap-1.5 font-medium transition-colors">
               <i class="fas fa-filter"></i> Apply Filters
             </button>
           </div>
         </div>
       </div>
     </div>
+    </form>
 
     <!-- Table -->
     <div class="bg-white rounded-xl shadow-sm overflow-hidden">
       <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
         <h3 class="text-sm font-semibold text-gray-900">Service Records</h3>
-        <span class="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">10 of 148</span>
+        <span class="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ $client_service_record->count() }} of {{ $client_service_record->total() }}</span>
       </div>
       <div class="overflow-x-auto">
         <table class="min-w-full">
@@ -120,15 +140,20 @@ const COLORS = ["#DBEAFE","#D1FAE5","#FEF3C7","#EDE9FE","#FCE7F3","#E0F2FE","#FE
         </table>
       </div>
       <div class="px-6 py-3 border-t border-gray-100 flex items-center justify-between">
-        <span class="text-xs text-gray-400">Showing 1–10 of 148 results</span>
+        <span class="text-xs text-gray-400">
+          Showing {{ $client_service_record->firstItem() ?? 0 }}–{{ $client_service_record->lastItem() ?? 0 }} of {{ $client_service_record->total() }} results
+        </span>
         <div class="flex gap-1">
-          <button class="pag-btn">&laquo;</button>
-          <button class="pag-btn active">1</button>
-          <button class="pag-btn">2</button>
-          <button class="pag-btn">3</button>
-          <span class="pag-btn" style="border:none;background:transparent;color:#9CA3AF;">…</span>
-          <button class="pag-btn">15</button>
-          <button class="pag-btn">&raquo;</button>
+          <a href="{{ $client_service_record->onFirstPage() ? '#' : $client_service_record->previousPageUrl() }}"
+             class="pag-btn {{ $client_service_record->onFirstPage() ? 'opacity-40 pointer-events-none' : '' }}">&laquo;</a>
+
+          @for ($i = 1; $i <= $client_service_record->lastPage(); $i++)
+            <a href="{{ $client_service_record->url($i) }}"
+               class="pag-btn {{ $client_service_record->currentPage() == $i ? 'active' : '' }}">{{ $i }}</a>
+          @endfor
+
+          <a href="{{ $client_service_record->hasMorePages() ? $client_service_record->nextPageUrl() : '#' }}"
+             class="pag-btn {{ $client_service_record->hasMorePages() ? '' : 'opacity-40 pointer-events-none' }}">&raquo;</a>
         </div>
       </div>
     </div>
@@ -191,10 +216,6 @@ const COLORS = ["#DBEAFE","#D1FAE5","#FEF3C7","#EDE9FE","#FCE7F3","#E0F2FE","#FE
 
       <!-- Details -->
       <div class="space-y-3">
-        {{-- <div class="border border-orange-100 bg-orange-50/40 rounded-xl p-4">
-          <p class="text-xs font-bold text-orange-600 uppercase tracking-wide mb-2"><i class="fas fa-triangle-exclamation mr-1"></i>Problem / Issue Reported</p>
-          <p class="text-sm text-gray-700 leading-relaxed" id="m-problem">—</p>
-        </div> --}}
         <div class="border border-red-100 bg-red-50/40 rounded-xl p-4">
           <p class="text-xs font-bold text-red-600 uppercase tracking-wide mb-2"><i class="fas fa-magnifying-glass mr-1"></i>Root Cause / Findings</p>
           <p class="text-sm text-gray-700 leading-relaxed" id="m-root">—</p>
@@ -225,18 +246,6 @@ const COLORS = ["#DBEAFE","#D1FAE5","#FEF3C7","#EDE9FE","#FCE7F3","#E0F2FE","#FE
           </table>
         </div>
       </div>
-
-      {{-- <!-- Before Images -->
-      <div id="before-block">
-        <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2"><i class="fas fa-camera mr-1"></i>Before Service Images</p>
-        <div id="before-imgs" class="flex flex-wrap gap-2"></div>
-      </div> --}}
-
-      <!-- After Images -->
-      {{-- <div id="after-block">
-        <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2"><i class="fas fa-camera-rotate mr-1"></i>After Service Images</p>
-        <div id="after-imgs" class="flex flex-wrap gap-2"></div>
-      </div> --}}
     </div>
 
     <div class="px-6 py-4 border-t border-gray-100 flex justify-end gap-2">
@@ -263,8 +272,8 @@ function render() {
   document.getElementById('tbl').innerHTML = RECORDS.map(r => {
     const machine_name = machines.find(x => x.id == r.machine_id).name;
     const machine_serial = machines.find(x => x.id == r.machine_id).serial_number;
-    const mc = mColor(r.machine);
-    const tc = typeBadge(r.type);
+    const mc = mColor(machine_name);
+    const tc = typeBadge(r.service_type);
     const sc = r.equipment_status === 'Operational' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
     const si = r.equipment_status === 'Operational' ? 'fa-circle-check' : 'fa-circle-xmark';
     return `<tr onclick="openModal(${r.id})">
@@ -282,9 +291,8 @@ function render() {
       </td>
       <td class="px-5 py-3.5">
         <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold ${tc}"><i class="fas ${typeIcon(r.service_type)} text-[9px]"></i>${r.service_type}</span>
-        ${r.before > 0 || r.after > 0 ? `<div class="mt-1"><span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-xs bg-gray-100 text-gray-600"><i class="fas fa-camera text-[9px]"></i>${r.before + r.after}</span></div>` : ''}
       </td>
-      <td class="px-5 py-3.5 text-sm text-gray-800">${r.service_engineer }</td>
+      <td class="px-5 py-3.5 text-sm text-gray-800">${r.service_engineer}</td>
       <td class="px-5 py-3.5"><span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold ${sc}"><i class="fas ${si} text-[9px]"></i>${r.equipment_status}</span></td>
       <td class="px-5 py-3.5" onclick="event.stopPropagation()">
         <div class="flex gap-1.5">
@@ -298,7 +306,6 @@ function render() {
 
 function openModal(id) {
   const r = RECORDS.find(x => x.id === id);
-  console.log(r)
   const machine_name = machines.find(x => x.id == r.machine_id).name;
   const machine_serial = machines.find(x => x.id == r.machine_id).serial_number;
   const machine_model = machines.find(x => x.id == r.machine_id).model;
@@ -312,7 +319,6 @@ function openModal(id) {
   document.getElementById('m-model').textContent = machine_model;
   document.getElementById('m-engineer').textContent = r.service_engineer;
   document.getElementById('m-idver').textContent = r.identification_verification;
-  // document.getElementById('m-problem').textContent = "Problem";
   document.getElementById('m-root').textContent = r.root_cause_findings;
   document.getElementById('m-actions').textContent = r.action_taken;
   document.getElementById('m-reco').textContent = r.recommendations;
@@ -325,38 +331,13 @@ function openModal(id) {
 
   // Parts
   const pb = document.getElementById('parts-block');
-  if (JSON.parse(r.parts_replaced).length) {
+  const parts = JSON.parse(r.parts_replaced || '[]');
+  if (parts.length) {
     pb.classList.remove('hidden');
-    document.getElementById('parts-rows').innerHTML = JSON.parse(r.parts_replaced).map(p =>
+    document.getElementById('parts-rows').innerHTML = parts.map(p =>
       `<tr><td class="px-4 py-2.5 font-bold text-gray-900">${p.qty || ""}</td><td class="px-4 py-2.5 text-gray-800">${p.particulars || ""}</td><td class="px-4 py-2.5 mono text-gray-600 text-xs">${p.si_dr_no || ""}</td></tr>`
     ).join('');
   } else { pb.classList.add('hidden'); }
-
-  // // Before images
-  // const bb = document.getElementById('before-block');
-  // const bi = document.getElementById('before-imgs');
-  // if (JSON.parse(r.before_images).length > 0) {
-  //   bb.classList.remove('hidden');
-  //   bi.innerHTML = Array.from({length: JSON.parse(r.before_images).length}, (_, i) => {
-  //     const src = window.location.origin+"/storage/"+JSON.parse(r.before_images)[i];
-  //     const lsrc = window.location.origin+"/storage/"+JSON.parse(r.before_images)[i];
-  //     return `<img src="${src}" class="img-thumb" style="width: 100px; height: 100px;" onclick="openLB('${lsrc}')" alt="Before ${i+1}">`;
-  //   }).join('');
-  // } else { bb.classList.add('hidden'); }
-
-  // // After images
-  // const ab = document.getElementById('after-block');
-  // const ai = document.getElementById('after-imgs');
-  // ab.classList.remove('hidden');
-  // if (JSON.parse(r.after_images).length > 0) {
-  //   ai.innerHTML = Array.from({length: JSON.parse(r.after_images).length}, (_, i) => {
-  //     const src = window.location.origin+"/storage/"+JSON.parse(r.after_images)[i];
-  //     const lsrc = window.location.origin+"/storage/"+JSON.parse(r.after_images)[i];
-  //     return `<img src="${src}" class="img-thumb" style="width: 100px; height: 100px; onclick="openLB('${lsrc}')" alt="After ${i+1}">`;
-  //   }).join('');
-  // } else {
-  //   ab.classList.add('hidden')
-  // }
 
   document.getElementById('modal').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
@@ -378,4 +359,4 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal
 
 render();
 </script>
-@endsection 
+@endsection
